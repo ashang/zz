@@ -1,0 +1,696 @@
+<!doctype html><html class="dark light"><head><meta charset=UTF-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1.0" name=viewport><title>
+         macos
+        
+    </title><meta content=macos property=og:title><meta content="An elegant and understated" property=og:description><meta content="An elegant and understated" name=description><link href=/icon/favicon.png rel=icon type=image/png><link href=https://ashang.github.io/zz/fonts.css rel=stylesheet><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script><script async id=MathJax-script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><link href=https://ashang.github.io/zz/atom.xml rel=alternate title=atbb type=application/atom+xml><link href=https://ashang.github.io/zz/theme/light.css rel=stylesheet><link href=https://ashang.github.io/zz/theme/dark.css id=darkModeStyle rel=stylesheet><link href=https://ashang.github.io/zz/main.css media=screen rel=stylesheet><body><div class=content><header><div class=main><a href=https://ashang.github.io/zz/>atbb</a><div class=socials><a class=social href=https://github.com/ashang/ rel=me> <img alt=github src=/social_icons/github.svg> </a></div></div><nav><a href=$BASE_URL/search/ style=margin-left:.7em>Search</a><a href=/notes style=margin-left:.7em>/notes</a><a href=/posts style=margin-left:.7em>/posts</a><a href=/gallery style=margin-left:.7em>/gallery</a><a href=/tags style=margin-left:.7em>/tags</a><a href=/projects style=margin-left:.7em>/projects</a> | <a href=javascript:void(0) id=dark-mode-toggle onclick=toggleTheme()> <img id=sun-icon src=/feather/sun.svg style=filter:invert(1)> <img id=moon-icon src=/feather/moon.svg> </a><script src=https://ashang.github.io/zz/js/themetoggle.js></script></nav></header><main><article><div class=title><div class=page-header>macos<span class=primary-color style=font-size:1.6em>.</span></div><div class=meta>Posted on <time>2023-09-24</time></div></div><h1>Table of Contents</h1><ul><li><a href=https://ashang.github.io/zz/notes/macos/#disk-image>disk image</a><li><a href=https://ashang.github.io/zz/notes/macos/#ps>ps</a><li><a href=https://ashang.github.io/zz/notes/macos/#ifconfig>ifconfig</a><li><a href=https://ashang.github.io/zz/notes/macos/#route>route</a></ul><section class=body><h2 id=disk-image>disk image</h2><p>Go to Mac App Store and search macOS Catalina. Then hit on "Get" to download<p>You will find the an app named Install macOS Catalina in Application folder. That's the file for OS installation.<p>https://github.com/corpnewt/gibMacOS/archive/refs/heads/master.zip<pre style=background:#0f1419;color:#bfbab0><code><span>hdiutil convert /path/file.iso -format UDRW -o img_file_output_path
+</span><span>
+</span><span>diskutil list
+</span><span>
+</span><span>diskutil unmountDisk /dev/diskX
+</span></code></pre><p>Step 4: When all preparations are completed, it is the time to write the converted IMG file to USB, which becomes bootable afterwards.<pre style=background:#0f1419;color:#bfbab0><code><span>sudo umount /dev/disk3s2
+</span><span>
+</span><span>sudo dd if=/img_file_path of=/dev/rdiskN bs=1m 
+</span><span>
+</span><span>diskutil eject /dev/disk3s2 
+</span></code></pre><p>On Windows<pre style=background:#0f1419;color:#bfbab0><code><span>hdiutil convert /path/sourceimagefile.dmg -format UDTO -o /path/targetmage.iso
+</span></code></pre><p>On MacOS<pre style=background:#0f1419;color:#bfbab0><code><span>sudo /Applications/Install_macOS_Ventura.app/Contents/Resources/createinstallmedia –volume /Volumes/SAMSUNG
+</span></code></pre><p>Linux Bootable USB Creator on Mac: Etcher ISO Burner<pre style=background:#0f1419;color:#bfbab0><code><span>diskutil list external
+</span><span>
+</span><span>diskutil eraseDisk MS-DOS "WINDOWS10" GPT disk2
+</span><span>
+</span><span>hdiutil mount ~/Downloads/your_windows_10_image.iso
+</span><span>
+</span><span>cp -rp /Volumes/COCOMA_X64FRE_EN-US_DV9/* /Volumes/WINDOWS10/
+</span></code></pre><p>brew install wimlib<pre style=background:#0f1419;color:#bfbab0><code><span>wimlib-imagex split /Volumes/CCCOMA_X64FRE_EN-US_DV9/sources/install.wim /Volumes/NDISK/sources/install.swm 3000
+</span><span>
+</span><span>3000 is the file size of split install.wim file. The unit s MB by default.
+</span></code></pre><p>SSD:<p>choose GUID from Scheme list. The file system should be APFS.<p>For Apple Silicon Mac, shutdown the Mac, wait a few seconds and long press the Power button. It will load Startup options at first.<p>Startup Security Utility: In certain cases where your Mac has the Apple T2 Security Chip (2018 and later devices), it may be your Startup Security Utility settings that are preventing you from booting from USB. In this situation, restart your Mac and hold down the Command + R keys when you see the Apple logo. This will put your Mac into Recovery mode. In macOS Utilities, go to Utilities > Startup Security Utility and sign in as admin. Under External Boot, select the second option - Allow Booting from External Media.<p>Option ROM Firmware: press Option-Shift-Command-Period. You should now be able to see the USB drive. This is not exactly a problem as much as a feature. If the USB contains Option ROM firmware, you will need to press those keys everytime to boot from your pen drive.<h2 id=ps>ps</h2><p>PS(1) General Commands Manual PS(1)<pre style=background:#0f1419;color:#bfbab0><code><span> ps – process status
+</span><span>
+</span><span> The ps utility displays a header line, followed by lines containing
+</span><span> information about all of your processes that have controlling terminals.
+</span><span>
+</span><span> A different set of processes can be selected for display by using any
+</span><span> combination of the --aa, --GG, --gg, --pp, --TT, --tt, --UU, and --uu options.  If more
+</span><span> than one of these options are given, then ppss will select all processes
+</span><span> which are matched by at least one of the given options.
+</span><span>
+</span><span> For the processes which have been selected for display, ppss will usually
+</span><span> display one line per process.  The --MM option may result in multiple
+</span><span> output lines (one line per thread) for some processes.  By default all of
+</span><span> these output lines are sorted first by controlling terminal, then by
+</span><span> process ID.  The --mm, --rr, and --vv options will change the sort order.  If
+</span><span> more than one sorting option was given, then the selected processes will
+</span><span> be sorted by the last sorting option which was specified.
+</span><span>
+</span><span> For the processes which have been selected for display, the information
+</span><span> to display is selected based on a set of keywords (see the --LL, --OO, and --oo
+</span><span> options).  The default output format includes, for each process, the
+</span><span> process' ID, controlling terminal, CPU time (including both user and
+</span><span> system time), state, and associated command.
+</span><span>
+</span><span> The options are as follows:
+</span><span>
+</span><span> --AA      Display information about other users' processes, including those
+</span><span>         without controlling terminals.
+</span><span>
+</span><span> --aa      Display information about other users' processes as well as your
+</span><span>         own.  This will skip any processes which do not have a
+</span><span>         controlling terminal, unless the --xx option is also specified.
+</span><span>
+</span><span> --CC      Change the way the CPU percentage is calculated by using a “raw”
+</span><span>         CPU calculation that ignores “resident” time (this normally has
+</span><span>         no effect).
+</span><span>
+</span><span> --cc      Change the “command” column output to just contain the executable
+</span><span>         name, rather than the full command line.
+</span><span>
+</span><span> --dd      Like --AA, but excludes session leaders.
+</span><span>
+</span><span> --EE      Display the environment as well.  This does not reflect changes
+</span><span>         in the environment after process launch.
+</span><span>
+</span><span> --ee      Identical to --AA.
+</span><span>
+</span><span> --ff      Display the uid, pid, parent pid, recent CPU usage, process start
+</span><span>         time, controlling tty, elapsed CPU usage, and the associated
+</span><span>         command.  If the --uu option is also used, display the user name
+</span><span>         rather then the numeric uid.  When --oo or --OO is used to add to the
+</span><span>         display following --ff, the command field is not truncated as
+</span><span>         severely as it is in other formats.
+</span><span>
+</span><span> --GG      Display information about processes which are running with the
+</span><span>         specified real group IDs.
+</span><span>
+</span><span> --gg      Display information about processes with the specified process
+</span><span>         group leaders.
+</span><span>
+</span><span> --hh      Repeat the information header as often as necessary to guarantee
+</span><span>         one header per page of information.
+</span><span>
+</span><span> --jj      Print information associated with the following keywords: uusseerr,
+</span><span>         ppiidd, ppppiidd, ppggiidd, sseessss, jjoobbcc, ssttaattee, tttt, ttiimmee, and ccoommmmaanndd.
+</span><span>
+</span><span> --LL      List the set of keywords available for the --OO and --oo options.
+</span><span>
+</span><span> --ll      Display information associated with the following keywords: uuiidd,
+</span><span>         ppiidd, ppppiidd, ffllaaggss, ccppuu, pprrii, nniiccee, vvsszz==SSZZ, rrssss, wwcchhaann, ssttaattee==SS,
+</span><span>         ppaaddddrr==AADDDDRR, ttttyy, ttiimmee, and ccoommmmaanndd==CCMMDD.
+</span><span>
+</span><span> --MM      Print the threads corresponding to each task.
+</span><span>
+</span><span> --mm      Sort by memory usage, instead of the combination of controlling
+</span><span>         terminal and process ID.
+</span><span>
+</span><span> --OO      Add the information associated with the space or comma separated
+</span><span>         list of keywords specified, after the process ID, in the default
+</span><span>         information display.  Keywords may be appended with an equals
+</span><span>         (‘=’) sign and a string.  This causes the printed header to use
+</span><span>         the specified string instead of the standard header.
+</span><span>
+</span><span> --oo      Display information associated with the space or comma separated
+</span><span>         list of keywords specified.  Multiple keywords may also be given
+</span><span>         in the form of more than one --oo option.  Keywords may be appended
+</span><span>         with an equals (‘=’) sign and a string.  This causes the printed
+</span><span>         header to use the specified string instead of the standard
+</span><span>         header.  If all keywords have empty header texts, no header line
+</span><span>         is written.
+</span><span>
+</span><span> --pp      Display information about processes which match the specified
+</span><span>         process IDs.
+</span><span>
+</span><span> --rr      Sort by current CPU usage, instead of the combination of
+</span><span>         controlling terminal and process ID.
+</span><span>
+</span><span> --SS      Change the way the process time is calculated by summing all
+</span><span>         exited children to their parent process.
+</span><span>
+</span><span> --TT      Display information about processes attached to the device
+</span><span>         associated with the standard input.
+</span><span>
+</span><span> --tt      Display information about processes attached to the specified
+</span><span>         terminal devices.
+</span><span>
+</span><span> --UU      Display the processes belonging to the specified real user IDs.
+</span><span>
+</span><span> --uu      Display the processes belonging to the specified usernames.
+</span><span>
+</span><span> --vv      Display information associated with the following keywords: ppiidd,
+</span><span>         ssttaattee, ttiimmee, ssll, rree, ppaaggeeiinn, vvsszz, rrssss, lliimm, ttssiizz, %%ccppuu, %%mmeemm, and
+</span><span>         ccoommmmaanndd.  The --vv option implies the --mm option.
+</span><span>
+</span><span> --ww      Use 132 columns to display information, instead of the default
+</span><span>         which is your window size.  If the --ww option is specified more
+</span><span>         than once, ppss will use as many columns as necessary without
+</span><span>         regard for your window size.  When output is not to a terminal,
+</span><span>         an unlimited number of columns are always used.
+</span><span>
+</span><span> --XX      When displaying processes matched by other options, skip any
+</span><span>         processes which do not have a controlling terminal.
+</span><span>
+</span><span> --xx      When displaying processes matched by other options, include
+</span><span>         processes which do not have a controlling terminal.  This is the
+</span><span>         opposite of the --XX option.  If both --XX and --xx are specified in
+</span><span>         the same command, then ppss will use the one which was specified
+</span><span>         last.
+</span><span>
+</span><span> A complete list of the available keywords is given below.  Some of these
+</span><span> keywords are further specified as follows:
+</span><span>
+</span><span> %%ccppuu      The CPU utilization of the process; this is a decaying average
+</span><span>           over up to a minute of previous (real) time.  Because the time
+</span><span>           base over which this is computed varies (some processes may be
+</span><span>           very young), it is possible for the sum of all %%ccppuu fields to
+</span><span>           exceed 100%.
+</span><span>
+</span><span> %%mmeemm      The percentage of real memory used by this process.
+</span><span>
+</span><span> ffllaaggss     The flags associated with the process as in the include file
+</span><span>           <_s_y_s_/_p_r_o_c_._h>:
+</span><span>
+</span><span>           P_ADVLOCK           0x00001      Process may hold a POSIX
+</span><span>                                            advisory lock
+</span><span>           P_CONTROLT          0x00002      Has a controlling terminal
+</span><span>           P_LP64              0x00004      Process is LP64
+</span><span>           P_NOCLDSTOP         0x00008      No SIGCHLD when children stop
+</span><span>           P_PPWAIT            0x00010      Parent is waiting for child to
+</span><span>                                            exec/exit
+</span><span>           P_PROFIL            0x00020      Has started profiling
+</span><span>           P_SELECT            0x00040      Selecting; wakeup/waiting
+</span><span>                                            danger
+</span><span>           P_CONTINUED         0x00080      Process was stopped and
+</span><span>                                            continued
+</span><span>           P_SUGID             0x00100      Had set id privileges since
+</span><span>                                            last exec
+</span><span>           P_SYSTEM            0x00200      System proc: no sigs, stats or
+</span><span>                                            swapping
+</span><span>           P_TIMEOUT           0x00400      Timing out during sleep
+</span><span>           P_TRACED            0x00800      Debugged process being traced
+</span><span>           P_WAITED            0x01000      Debugging process has waited
+</span><span>                                            for child
+</span><span>           P_WEXIT             0x02000      Working on exiting
+</span><span>           P_EXEC              0x04000      Process called exec
+</span><span>           P_OWEUPC            0x08000      Owe process an addupc() call
+</span><span>                                            at next ast
+</span><span>           P_WAITING           0x40000      Process has a wait() in
+</span><span>                                            progress
+</span><span>           P_KDEBUG            0x80000        Kdebug tracing on for this
+</span><span>                               process
+</span><span>
+</span><span> lliimm       The soft limit on memory used, specified via a call to
+</span><span>           setrlimit(2).
+</span><span>
+</span><span> llssttaarrtt    The exact time the command started, using the ‘%c’ format
+</span><span>           described in strftime(3).
+</span><span>
+</span><span> nniiccee      The process scheduling increment (see setpriority(2)).
+</span><span>
+</span><span> rrssss       the real memory (resident set) size of the process (in 1024
+</span><span>           byte units).
+</span><span>
+</span><span> ssttaarrtt     The time the command started.  If the command started less than
+</span><span>           24 hours ago, the start time is displayed using the “%l:ps.1p”
+</span><span>           format described in strftime(3).  If the command started less
+</span><span>           than 7 days ago, the start time is displayed using the
+</span><span>           “%a6.15p” format.  Otherwise, the start time is displayed using
+</span><span>           the “%e%b%y” format.
+</span><span>
+</span><span> ssttaattee     The state is given by a sequence of characters, for example,
+</span><span>           “RWNA”.  The first character indicates the run state of the
+</span><span>           process:
+</span><span>
+</span><span>           I       Marks a process that is idle (sleeping for longer than
+</span><span>                   about 20 seconds).
+</span><span>           R       Marks a runnable process.
+</span><span>           S       Marks a process that is sleeping for less than about 20
+</span><span>                   seconds.
+</span><span>           T       Marks a stopped process.
+</span><span>           U       Marks a process in uninterruptible wait.
+</span><span>           Z       Marks a dead process (a “zombie”).
+</span><span>
+</span><span>           Additional characters after these, if any, indicate additional
+</span><span>           state information:
+</span><span>
+</span><span>           +       The process is in the foreground process group of its
+</span><span>                   control terminal.
+</span><span>           <       The process has raised CPU scheduling priority.
+</span><span>           >       The process has specified a soft limit on memory
+</span><span>                   requirements and is currently exceeding that limit;
+</span><span>                   such a process is (necessarily) not swapped.
+</span><span>           A       the process has asked for random page replacement
+</span><span>                   (VA_ANOM, from vadvise(2), for example, lisp(1) in a
+</span><span>                   garbage collect).
+</span><span>           E       The process is trying to exit.
+</span><span>           L       The process has pages locked in core (for example, for
+</span><span>                   raw I/O).
+</span><span>           N       The process has reduced CPU scheduling priority (see
+</span><span>                   setpriority(2)).
+</span><span>           S       The process has asked for FIFO page replacement
+</span><span>                   (VA_SEQL, from vadvise(2), for example, a large image
+</span><span>                   processing program using virtual memory to sequentially
+</span><span>                   address voluminous data).
+</span><span>           s       The process is a session leader.
+</span><span>           V       The process is suspended during a vfork(2).
+</span><span>           W       The process is swapped out.
+</span><span>           X       The process is being traced or debugged.
+</span><span>
+</span><span> tttt        An abbreviation for the pathname of the controlling terminal,
+</span><span>           if any.  The abbreviation consists of the three letters
+</span><span>           following _/_d_e_v_/_t_t_y, or, for the console, “con”.  This is
+</span><span>           followed by a ‘-’ if the process can no longer reach that
+</span><span>           controlling terminal (i.e., it has been revoked).
+</span><span>
+</span><span> wwcchhaann     The event (an address in the system) on which a process waits.
+</span><span>           When printed numerically, the initial part of the address is
+</span><span>           trimmed off and the result is printed in hex, for example,
+</span><span>           0x80324000 prints as 324000.
+</span><span>
+</span><span> When printing using the command keyword, a process that has exited and
+</span><span> has a parent that has not yet waited for the process (in other words, a
+</span><span> zombie) is listed as “&LTdefunct>”, and a process which is blocked while
+</span><span> trying to exit is listed as “&LTexiting>”.  If the arguments cannot be
+</span><span> located (usually because it has not been set, as is the case of system
+</span><span> processes and/or kernel threads) the command name is printed within
+</span><span> square brackets.  The process can change the arguments shown with
+</span><span> setproctitle(3).  Otherwise, ppss makes an educated guess as to the file
+</span><span> name and arguments given when the process was created by examining memory
+</span><span> or the swap area.  The method is inherently somewhat unreliable and in
+</span><span> any event a process is entitled to destroy this information.  The ucomm
+</span><span> (accounting) keyword can, however, be depended on.  If the arguments are
+</span><span> unavailable or do not agree with the ucomm keyword, the value for the
+</span><span> ucomm keyword is appended to the arguments in parentheses.
+</span></code></pre><p>KKEEYYWWOORRDDSS The following is a complete list of the available keywords and their meanings. Several of them have aliases (keywords which are synonyms).<pre style=background:#0f1419;color:#bfbab0><code><span> %%ccppuu           percentage CPU usage (alias ppccppuu)
+</span><span> %%mmeemm           percentage memory usage (alias ppmmeemm)
+</span><span> aaccffllaagg         accounting flag (alias aaccffllgg)
+</span><span> aarrggss           command and arguments
+</span><span> ccoommmm           command
+</span><span> ccoommmmaanndd        command and arguments
+</span><span> ccppuu            short-term CPU usage factor (for scheduling)
+</span><span> eettiimmee          elapsed running time
+</span><span> ffllaaggss          the process flags, in hexadecimal (alias ff)
+</span><span> ggiidd            processes group id (alias ggrroouupp)
+</span><span> iinnbbllkk          total blocks read (alias iinnbblloocckk)
+</span><span> jjoobbcc           job control count
+</span><span> kkttrraaccee         tracing flags
+</span><span> kkttrraacceepp        tracing vnode
+</span><span> lliimm            memoryuse limit
+</span><span> llooggnnaammee        login name of user who started the session
+</span><span> llssttaarrtt         time started
+</span><span> mmaajjfflltt         total page faults
+</span><span> mmiinnfflltt         total page reclaims
+</span><span> mmssggrrccvv         total messages received (reads from pipes/sockets)
+</span><span> mmssggssnndd         total messages sent (writes on pipes/sockets)
+</span><span> nniiccee           nice value (alias nnii)
+</span><span> nniivvccssww         total involuntary context switches
+</span><span> nnssiiggss          total signals taken (alias nnssiiggnnaallss)
+</span><span> nnsswwaapp          total swaps in/out
+</span><span> nnvvccssww          total voluntary context switches
+</span><span> nnwwcchhaann         wait channel (as an address)
+</span><span> oouubbllkk          total blocks written (alias oouubblloocckk)
+</span><span> pp__rruu           resource usage (valid only for zombie)
+</span><span> ppaaddddrr          swap address
+</span><span> ppaaggeeiinn         pageins (same as majflt)
+</span><span> ppggiidd           process group number
+</span><span> ppiidd            process ID
+</span><span> ppppiidd           parent process ID
+</span><span> pprrii            scheduling priority
+</span><span> pprrssnnaa          persona
+</span><span> rree             core residency time (in seconds; 127 = infinity)
+</span><span> rrggiidd           real group ID
+</span><span> rrssss            resident set size
+</span><span> rruuiidd           real user ID
+</span><span> rruusseerr          user name (from ruid)
+</span><span> sseessss           session ID
+</span><span> ssiigg            pending signals (alias ppeennddiinngg)
+</span><span> ssiiggmmaasskk        blocked signals (alias bblloocckkeedd)
+</span><span> ssll             sleep time (in seconds; 127 = infinity)
+</span><span> ssttaarrtt          time started
+</span><span> ssttaattee          symbolic process state (alias ssttaatt)
+</span><span> ssvvggiidd          saved gid from a setgid executable
+</span><span> ssvvuuiidd          saved UID from a setuid executable
+</span><span> ttddeevv           control terminal device number
+</span><span> ttiimmee           accumulated CPU time, user + system (alias ccppuuttiimmee)
+</span><span> ttppggiidd          control terminal process group ID
+</span><span> ttsseessss          control terminal session ID
+</span><span> ttssiizz           text size (in Kbytes)
+</span><span> tttt             control terminal name (two letter abbreviation)
+</span><span> ttttyy            full name of control terminal
+</span><span> uuccoommmm          name to be used for accounting
+</span><span> uuiidd            effective user ID
+</span><span> uupprr            scheduling priority on return from system call (alias
+</span><span>                uussrrpprrii)
+</span><span> uusseerr           user name (from UID)
+</span><span> uuttiimmee          user CPU time (alias ppuuttiimmee)
+</span><span> vvsszz            virtual size in Kbytes (alias vvssiizzee)
+</span><span> wwcchhaann          wait channel (as a symbolic name)
+</span><span> wwqq             total number of workqueue threads
+</span><span> wwqqbb            number of blocked workqueue threads
+</span><span> wwqqrr            number of running workqueue threads
+</span><span> wwqqll            workqueue limit status (C = constrained thread limit, T =
+</span><span>                total thread limit)
+</span><span> xxssttaatt          exit or stop status (valid only for stopped or zombie
+</span><span>                process)
+</span></code></pre><p>EENNVVIIRROONNMMEENNTT The following environment variables affect the execution of ppss:<pre style=background:#0f1419;color:#bfbab0><code><span> COLUMNS      If set, specifies the user's preferred output width in
+</span><span>              column positions.  By default, ppss attempts to automatically
+</span><span>              determine the terminal width.
+</span></code></pre><p>FFIILLEESS _/_d_e_v special files and device names _/_v_a_r_/_r_u_n_/_d_e_v_._d_b /dev name database _/_v_a_r_/_d_b_/_k_v_m___k_e_r_n_e_l_._d_b system namelist database<p>LLEEGGAACCYY DDEESSCCRRIIPPTTIIOONN In legacy mode, ppss functions as described above, with the following differences:<pre style=background:#0f1419;color:#bfbab0><code><span> --ee      Display the environment as well. Same as --EE.
+</span><span>
+</span><span> --gg      Ignored for compatibility. Takes no argument.
+</span><span>
+</span><span> --ll      Display information associated with the following keywords: uuiidd,
+</span><span>         ppiidd, ppppiidd, ccppuu, pprrii, nniiccee, vvsszz, rrssss, wwcchhaann, ssttaattee, tttt,, ttiimmee, and
+</span><span>         ccoommmmaanndd.
+</span><span>
+</span><span> --uu      Display information associated with the following keywords: uusseerr,
+</span><span>         ppiidd, %%ccppuu, %%mmeemm, vvsszz, rrssss, tttt, ssttaattee, ssttaarrtt, ttiimmee, and ccoommmmaanndd.
+</span><span>         The --uu option implies the --rr option.
+</span><span>
+</span><span> The biggest change is in the interpretation of the --uu option, which now
+</span><span> displays processes belonging to the specified username(s).  Thus, "ps
+</span><span> -aux" will fail (unless you want to know about user "x").  As a
+</span><span> convenience, however, "ps aux" still works as it did in Tiger.
+</span><span>
+</span><span> For more information about legacy mode, see compat(5).
+</span></code></pre><p>SSEEEE AALLSSOO kill(1), w(1), kvm(3), strftime(3), sysctl(8)<p>SSTTAANNDDAARRDDSS The ppss utility supports the Version 3 of the Single UNIX Specification (“SUSv3”) standard.<p>HHIISSTTOORRYY The ppss command appeared in Version 4 AT&T UNIX.<p>BBUUGGSS Since ppss cannot run faster than the system and is run as any other scheduled process, the information it displays can never be exact.<pre style=background:#0f1419;color:#bfbab0><code><span> The ppss utility does not correctly display argument lists containing
+</span><span> multibyte characters.
+</span></code></pre><p>macOS 14.2 March 20, 2005 macOS 14.2<pre style=background:#0f1419;color:#bfbab0><code><span>ps aux： 显示所有用户的详细进程信息。
+</span><span>ps -ef： 显示所有进程的完整信息。
+</span><span>ps -e： 显示所有进程的基本信息。
+</span><span>ps -u username： 显示特定用户的进程信息。
+</span><span>ps -p PID： 显示特定进程ID的详细信息。
+</span><span>ps -l： 以长格式显示进程信息，包括更多的列。
+</span><span>ps -o： 允许用户指定要显示的列，并以用户定义的格式显示进程信息。例如，ps -o pid,ppid,cmd 将显示进程ID、父进程ID和命令列。
+</span></code></pre><p>ps -o <列1>,<列2>,...： 仅显示指定的列信息，可以使用逗号分隔列名。 ps -T： 显示每个线程的信息。 ps -o pid,ppid,cmd： 仅显示进程ID、父进程ID和命令。<p>ps -C <命令名称>： 显示指定命令名称的进程信息。<pre style=background:#0f1419;color:#bfbab0><code><span>-e 和 -f： -e 参数用于显示系统中所有的进程，而 -f 用于以完整格式显示进程信息。
+</span></code></pre><p>aux 和 -e： 不能同时使用。aux 显示所有用户的详细进程信息，而 -e 显示系统中所有的进程。<p>这些组合参数的形式可以根据具体的操作系统和 ps 命令的版本而有所不同。在这些组合中，各个字符的含义如下：<pre style=background:#0f1419;color:#bfbab0><code><span>a：显示所有进程。
+</span><span>u：显示详细的用户信息。
+</span><span>x：显示没有控制终端的进程。
+</span></code></pre><h2 id=ifconfig>ifconfig</h2><pre style=background:#0f1419;color:#bfbab0><code><span>$ ifconfig
+</span><span>lo0: flags=8049&LTUP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
+</span><span>	options=1203&LTRXCSUM,TXCSUM,TXSTATUS,SW_TIMESTAMP>
+</span><span>	inet 127.0.0.1 netmask 0xff000000
+</span><span>	inet6 ::1 prefixlen 128
+</span><span>	inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>gif0: flags=8010&LTPOINTOPOINT,MULTICAST> mtu 1280
+</span><span>stf0: flags=0<> mtu 1280
+</span><span>anpi1: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:c1
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>anpi0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:c0
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>en4: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:a0
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>en5: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:a1
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>en1: flags=8963&LTUP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=460&LTTSO4,TSO6,CHANNEL_IO>
+</span><span>	ether 36:43:5d:b3:29:00
+</span><span>	media: autoselect &LTfull-duplex>
+</span><span>	status: inactive
+</span><span>en2: flags=8963&LTUP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=460&LTTSO4,TSO6,CHANNEL_IO>
+</span><span>	ether 36:43:5d:b3:29:04
+</span><span>	media: autoselect &LTfull-duplex>
+</span><span>	status: inactive
+</span><span>en3: flags=8963&LTUP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=460&LTTSO4,TSO6,CHANNEL_IO>
+</span><span>	ether 36:43:5d:b3:29:08
+</span><span>	media: autoselect &LTfull-duplex>
+</span><span>	status: inactive
+</span><span>bridge0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=63&LTRXCSUM,TXCSUM,TSO4,TSO6>
+</span><span>	ether 36:43:5d:b3:29:00
+</span><span>	Configuration:
+</span><span>		id 0:0:0:0:0:0 priority 0 hellotime 0 fwddelay 0
+</span><span>		maxage 0 holdcnt 0 proto stp maxaddr 100 timeout 1200
+</span><span>		root id 0:0:0:0:0:0 priority 0 ifcost 0 port 0
+</span><span>		ipfilter disabled flags 0x0
+</span><span>	member: en1 flags=3&LTLEARNING,DISCOVER>
+</span><span>	        ifmaxaddr 0 port 8 priority 0 path cost 0
+</span><span>	member: en2 flags=3&LTLEARNING,DISCOVER>
+</span><span>	        ifmaxaddr 0 port 9 priority 0 path cost 0
+</span><span>	member: en3 flags=3&LTLEARNING,DISCOVER>
+</span><span>	        ifmaxaddr 0 port 10 priority 0 path cost 0
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: &LTunknown type>
+</span><span>	status: inactive
+</span><span>ap1: flags=8843&LTUP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=6460&LTTSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+</span><span>	ether 62:3e:5f:56:81:e7
+</span><span>	inet6 fe80::603e:5fff:fe56:81e7%ap1 prefixlen 64 scopeid 0xc
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect (&LTunknown type>)
+</span><span>	status: inactive
+</span><span>en0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=6460&LTTSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+</span><span>	ether 60:3e:5f:56:81:e7
+</span><span>	inet6 fe80::f1:29d0:74ac:23d%en0 prefixlen 64 secured scopeid 0xd
+</span><span>	inet 10.50.30.43 netmask 0xffffff00 broadcast 10.50.30.255
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect
+</span><span>	status: active
+</span><span>awdl0: flags=8843&LTUP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=6460&LTTSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+</span><span>	ether 5a:70:b9:ee:d2:2e
+</span><span>	inet6 fe80::5870:b9ff:feee:d22e%awdl0 prefixlen 64 scopeid 0xe
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect
+</span><span>	status: active
+</span><span>llw0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 5a:70:b9:ee:d2:2e
+</span><span>	inet6 fe80::5870:b9ff:feee:d22e%llw0 prefixlen 64 scopeid 0xf
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect
+</span><span>	status: inactive
+</span><span>utun0: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 1500
+</span><span>	inet6 fe80::3441:5b7c:2a6a:2092%utun0 prefixlen 64 scopeid 0x10
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>utun1: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 1380
+</span><span>	inet6 fe80::9d76:7b9a:6c27:ca38%utun1 prefixlen 64 scopeid 0x11
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>utun2: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 2000
+</span><span>	inet6 fe80::7e4c:d569:50b:3a21%utun2 prefixlen 64 scopeid 0x12
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>utun3: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 1000
+</span><span>	inet6 fe80::ce81:b1c:bd2c:69e%utun3 prefixlen 64 scopeid 0x13
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span></code></pre><pre style=background:#0f1419;color:#bfbab0><code><span>$ ifconfig
+</span><span>lo0: flags=8049&LTUP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
+</span><span>	options=1203&LTRXCSUM,TXCSUM,TXSTATUS,SW_TIMESTAMP>
+</span><span>	inet 127.0.0.1 netmask 0xff000000
+</span><span>	inet6 ::1 prefixlen 128
+</span><span>	inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>gif0: flags=8010&LTPOINTOPOINT,MULTICAST> mtu 1280
+</span><span>stf0: flags=0<> mtu 1280
+</span><span>anpi1: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:c1
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>anpi0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:c0
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>en4: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:a0
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>en5: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:a1
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>en1: flags=8963&LTUP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=460&LTTSO4,TSO6,CHANNEL_IO>
+</span><span>	ether 36:43:5d:b3:29:00
+</span><span>	media: autoselect &LTfull-duplex>
+</span><span>	status: inactive
+</span><span>en2: flags=8963&LTUP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=460&LTTSO4,TSO6,CHANNEL_IO>
+</span><span>	ether 36:43:5d:b3:29:04
+</span><span>	media: autoselect &LTfull-duplex>
+</span><span>	status: inactive
+</span><span>en3: flags=8963&LTUP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=460&LTTSO4,TSO6,CHANNEL_IO>
+</span><span>	ether 36:43:5d:b3:29:08
+</span><span>	media: autoselect &LTfull-duplex>
+</span><span>	status: inactive
+</span><span>bridge0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=63&LTRXCSUM,TXCSUM,TSO4,TSO6>
+</span><span>	ether 36:43:5d:b3:29:00
+</span><span>	Configuration:
+</span><span>		id 0:0:0:0:0:0 priority 0 hellotime 0 fwddelay 0
+</span><span>		maxage 0 holdcnt 0 proto stp maxaddr 100 timeout 1200
+</span><span>		root id 0:0:0:0:0:0 priority 0 ifcost 0 port 0
+</span><span>		ipfilter disabled flags 0x0
+</span><span>	member: en1 flags=3&LTLEARNING,DISCOVER>
+</span><span>	        ifmaxaddr 0 port 8 priority 0 path cost 0
+</span><span>	member: en2 flags=3&LTLEARNING,DISCOVER>
+</span><span>	        ifmaxaddr 0 port 9 priority 0 path cost 0
+</span><span>	member: en3 flags=3&LTLEARNING,DISCOVER>
+</span><span>	        ifmaxaddr 0 port 10 priority 0 path cost 0
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: &LTunknown type>
+</span><span>	status: inactive
+</span><span>ap1: flags=8843&LTUP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=6460&LTTSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+</span><span>	ether 62:3e:5f:56:81:e7
+</span><span>	inet6 fe80::603e:5fff:fe56:81e7%ap1 prefixlen 64 scopeid 0xc
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect (&LTunknown type>)
+</span><span>	status: inactive
+</span><span>en0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=6460&LTTSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+</span><span>	ether 60:3e:5f:56:81:e7
+</span><span>	inet6 fe80::f1:29d0:74ac:23d%en0 prefixlen 64 secured scopeid 0xd
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect
+</span><span>	status: active
+</span><span>awdl0: flags=8843&LTUP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=6460&LTTSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+</span><span>	ether 5a:70:b9:ee:d2:2e
+</span><span>	inet6 fe80::5870:b9ff:feee:d22e%awdl0 prefixlen 64 scopeid 0xe
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect
+</span><span>	status: active
+</span><span>llw0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 5a:70:b9:ee:d2:2e
+</span><span>	inet6 fe80::5870:b9ff:feee:d22e%llw0 prefixlen 64 scopeid 0xf
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect
+</span><span>	status: inactive
+</span><span>utun0: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 1500
+</span><span>	inet6 fe80::3441:5b7c:2a6a:2092%utun0 prefixlen 64 scopeid 0x10
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>utun1: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 1380
+</span><span>	inet6 fe80::9d76:7b9a:6c27:ca38%utun1 prefixlen 64 scopeid 0x11
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>utun2: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 2000
+</span><span>	inet6 fe80::7e4c:d569:50b:3a21%utun2 prefixlen 64 scopeid 0x12
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>utun3: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 1000
+</span><span>	inet6 fe80::ce81:b1c:bd2c:69e%utun3 prefixlen 64 scopeid 0x13
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span></code></pre><pre style=background:#0f1419;color:#bfbab0><code><span>$ ifconfig
+</span><span>lo0: flags=8049&LTUP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
+</span><span>	options=1203&LTRXCSUM,TXCSUM,TXSTATUS,SW_TIMESTAMP>
+</span><span>	inet 127.0.0.1 netmask 0xff000000
+</span><span>	inet6 ::1 prefixlen 128
+</span><span>	inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>gif0: flags=8010&LTPOINTOPOINT,MULTICAST> mtu 1280
+</span><span>stf0: flags=0<> mtu 1280
+</span><span>anpi1: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:c1
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>anpi0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:c0
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>en4: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:a0
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>en5: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 26:f3:10:30:6c:a1
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: none
+</span><span>	status: inactive
+</span><span>en1: flags=8963&LTUP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=460&LTTSO4,TSO6,CHANNEL_IO>
+</span><span>	ether 36:43:5d:b3:29:00
+</span><span>	media: autoselect &LTfull-duplex>
+</span><span>	status: inactive
+</span><span>en2: flags=8963&LTUP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=460&LTTSO4,TSO6,CHANNEL_IO>
+</span><span>	ether 36:43:5d:b3:29:04
+</span><span>	media: autoselect &LTfull-duplex>
+</span><span>	status: inactive
+</span><span>en3: flags=8963&LTUP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=460&LTTSO4,TSO6,CHANNEL_IO>
+</span><span>	ether 36:43:5d:b3:29:08
+</span><span>	media: autoselect &LTfull-duplex>
+</span><span>	status: inactive
+</span><span>bridge0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=63&LTRXCSUM,TXCSUM,TSO4,TSO6>
+</span><span>	ether 36:43:5d:b3:29:00
+</span><span>	Configuration:
+</span><span>		id 0:0:0:0:0:0 priority 0 hellotime 0 fwddelay 0
+</span><span>		maxage 0 holdcnt 0 proto stp maxaddr 100 timeout 1200
+</span><span>		root id 0:0:0:0:0:0 priority 0 ifcost 0 port 0
+</span><span>		ipfilter disabled flags 0x0
+</span><span>	member: en1 flags=3&LTLEARNING,DISCOVER>
+</span><span>	        ifmaxaddr 0 port 8 priority 0 path cost 0
+</span><span>	member: en2 flags=3&LTLEARNING,DISCOVER>
+</span><span>	        ifmaxaddr 0 port 9 priority 0 path cost 0
+</span><span>	member: en3 flags=3&LTLEARNING,DISCOVER>
+</span><span>	        ifmaxaddr 0 port 10 priority 0 path cost 0
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: &LTunknown type>
+</span><span>	status: inactive
+</span><span>ap1: flags=8843&LTUP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=6460&LTTSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+</span><span>	ether 62:3e:5f:56:81:e7
+</span><span>	inet6 fe80::603e:5fff:fe56:81e7%ap1 prefixlen 64 scopeid 0xc
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect (&LTunknown type>)
+</span><span>	status: inactive
+</span><span>en0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=6460&LTTSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+</span><span>	ether 60:3e:5f:56:81:e7
+</span><span>	inet6 fe80::f1:29d0:74ac:23d%en0 prefixlen 64 secured scopeid 0xd
+</span><span>	inet 10.10.50.197 netmask 0xffffff00 broadcast 10.10.50.255
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect
+</span><span>	status: active
+</span><span>awdl0: flags=8843&LTUP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=6460&LTTSO4,TSO6,CHANNEL_IO,PARTIAL_CSUM,ZEROINVERT_CSUM>
+</span><span>	ether 5a:70:b9:ee:d2:2e
+</span><span>	inet6 fe80::5870:b9ff:feee:d22e%awdl0 prefixlen 64 scopeid 0xe
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect
+</span><span>	status: active
+</span><span>llw0: flags=8863&LTUP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+</span><span>	options=400&LTCHANNEL_IO>
+</span><span>	ether 5a:70:b9:ee:d2:2e
+</span><span>	inet6 fe80::5870:b9ff:feee:d22e%llw0 prefixlen 64 scopeid 0xf
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>	media: autoselect
+</span><span>	status: inactive
+</span><span>utun0: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 1500
+</span><span>	inet6 fe80::3441:5b7c:2a6a:2092%utun0 prefixlen 64 scopeid 0x10
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>utun1: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 1380
+</span><span>	inet6 fe80::9d76:7b9a:6c27:ca38%utun1 prefixlen 64 scopeid 0x11
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>utun2: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 2000
+</span><span>	inet6 fe80::7e4c:d569:50b:3a21%utun2 prefixlen 64 scopeid 0x12
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span><span>utun3: flags=8051&LTUP,POINTOPOINT,RUNNING,MULTICAST> mtu 1000
+</span><span>	inet6 fe80::ce81:b1c:bd2c:69e%utun3 prefixlen 64 scopeid 0x13
+</span><span>	nd6 options=201&LTPERFORMNUD,DAD>
+</span></code></pre><h2 id=route>route</h2><p>$ route -n get default route to: default destination: default mask: default gateway: 10.10.50.1 interface: en0 flags: &LTUP,GATEWAY,DONE,STATIC,PRCLONING,GLOBAL> recvpipe sendpipe ssthresh rtt,msec rttvar hopcount mtu expire 0 0 0 0 0 0 1500 0<p>$ netstat -nr<p>brew update && brew install bash && sudo chsh -s /usr/local/bin/bash $(whoami)<p>$ bash -version bash -version GNU bash, version 3.2.57(1)-release (arm64-apple-darwin23) Copyright (C) 2007 Free Software Foundation, Inc.<p>$ /opt/homebrew/bin/bash -version GNU bash, version 5.2.21(1)-release (aarch64-apple-darwin23.0.0) Copyright (C) 2022 Free Software Foundation, Inc. License GPLv3+: GNU GPL version 3 or later <a href=http://gnu.org/licenses/gpl.html>http://gnu.org/licenses/gpl.html</a><p>This is free software; you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<p>$ sudo chsh -s /opt/homebrew/bin/bash $(whoami) Changing shell for aaron.<p>route -nv get default u: inet 0.0.0.0; u: inet 0.0.0.0; u: link ; RTM_GET: Report Metrics: len 132, pid: 0, seq 1, errno 0, flags:&LTUP,GATEWAY,STATIC> locks: inits: sockaddrs: &LTDST,NETMASK,IFP> default default route to: default destination: default mask: default gateway: 10.50.20.254 interface: en6 flags: &LTUP,GATEWAY,DONE,STATIC,PRCLONING,GLOBAL> recvpipe sendpipe ssthresh rtt,msec rttvar hopcount mtu expire 0 0 0 0 0 0 1500 0<p>locks: inits: sockaddrs: &LTDST,GATEWAY,NETMASK,IFP,IFA> default 10.50.20.254 default en6:68.da.73.a1.ba.3e 10.50.20.11 route -n get default route to: default destination: default mask: default gateway: 10.50.20.254 interface: en6 flags: &LTUP,GATEWAY,DONE,STATIC,PRCLONING,GLOBAL> recvpipe sendpipe ssthresh rtt,msec rttvar hopcount mtu expire 0 0 0 0 0 0 1500 0 networksetup -listallnetworkservices An asterisk (*) denotes that a network service is disabled. AX88179A Thunderbolt Bridge Wi-Fi</section><div class=post-tags><nav class="nav tags"><ul class=tags><li><a href=https://ashang.github.io/zz/tags/system/>system</a></ul></nav></div></article></main></div>

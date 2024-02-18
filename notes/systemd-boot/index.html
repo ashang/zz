@@ -1,0 +1,29 @@
+<!doctype html><html class="dark light"><head><meta charset=UTF-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1.0" name=viewport><title>
+         systemd-boot
+        
+    </title><meta content=systemd-boot property=og:title><meta content="An elegant and understated" property=og:description><meta content="An elegant and understated" name=description><link href=/icon/favicon.png rel=icon type=image/png><link href=https://ashang.github.io/zz/fonts.css rel=stylesheet><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script><script async id=MathJax-script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><link href=https://ashang.github.io/zz/atom.xml rel=alternate title=atbb type=application/atom+xml><link href=https://ashang.github.io/zz/theme/light.css rel=stylesheet><link href=https://ashang.github.io/zz/theme/dark.css id=darkModeStyle rel=stylesheet><link href=https://ashang.github.io/zz/main.css media=screen rel=stylesheet><body><div class=content><header><div class=main><a href=https://ashang.github.io/zz/>atbb</a><div class=socials><a class=social href=https://github.com/ashang/ rel=me> <img alt=github src=/social_icons/github.svg> </a></div></div><nav><a href=$BASE_URL/search/ style=margin-left:.7em>Search</a><a href=/notes style=margin-left:.7em>/notes</a><a href=/posts style=margin-left:.7em>/posts</a><a href=/gallery style=margin-left:.7em>/gallery</a><a href=/tags style=margin-left:.7em>/tags</a><a href=/projects style=margin-left:.7em>/projects</a> | <a href=javascript:void(0) id=dark-mode-toggle onclick=toggleTheme()> <img id=sun-icon src=/feather/sun.svg style=filter:invert(1)> <img id=moon-icon src=/feather/moon.svg> </a><script src=https://ashang.github.io/zz/js/themetoggle.js></script></nav></header><main><article><div class=title><div class=page-header>systemd-boot<span class=primary-color style=font-size:1.6em>.</span></div><div class=meta>Posted on <time>2025-08-12</time></div></div><section class=body><pre class=language-sh data-lang=sh style=background:#0f1419;color:#bfbab0><code class=language-sh data-lang=sh><span style=color:#ffb454>root@nixos:/#</span><span> cat /boot/efi/loader/entries/a57533df2d7c93add1d295d8000003c8-5.11.0-38-generic.conf
+</span><span style=color:#ffb454>title</span><span>      Debian GNU/Linux 12 (bookworm)
+</span><span style=color:#ffb454>version</span><span>    5.11.0-38-generic
+</span><span style=color:#ffb454>machine-id</span><span> a57533df2d7c93add1d295d8000003c8
+</span><span style=color:#ffb454>sort-key</span><span>   debian
+</span><span style=font-style:italic;color:#5c6773>#options    findiso= init=/nix/store/ipw69qadqhc3iy8f83xbgzpf3wk3m8yb-nixos-system-nixos-23.05.362.6b0edc9c690/init root=LABEL=nixos-gnome-23.05-x86_64 boot.shell_on_fail video=hyperv_fb:1152x864 elevator=noop nohibernate splash loglevel=4 nomodeset systemd.machine_id=a57533df2d7c93add1d295d8000003c8
+</span><span style=color:#ffb454>linux</span><span>      /a57533df2d7c93add1d295d8000003c8/5.11.0-38-generic/linux
+</span><span style=color:#ffb454>initrd</span><span>     /a57533df2d7c93add1d295d8000003c8/5.11.0-38-generic/initrd.img-5.11.0-38-generic
+</span><span>
+</span><span style=color:#ffb454>root@nixos:/#</span><span> bootctl install
+</span><span style=color:#ffb454>Copied </span><span style=color:#c2d94c>"/usr/lib/systemd/boot/efi/systemd-bootx64.efi"</span><span> to </span><span style=color:#c2d94c>"/boot/efi/EFI/systemd/systemd-bootx64.efi"</span><span>.
+</span><span style=color:#ffb454>Copied </span><span style=color:#c2d94c>"/usr/lib/systemd/boot/efi/systemd-bootx64.efi"</span><span> to </span><span style=color:#c2d94c>"/boot/efi/EFI/BOOT/BOOTX64.EFI"</span><span>.
+</span><span style=color:#ffb454>Random</span><span> seed file /boot/efi/loader/random-seed successfully written (32 bytes)</span><span style=color:#f07178>.
+</span><span style=color:#ffb454>Created</span><span> EFI boot entry </span><span style=color:#c2d94c>"Linux Boot Manager"</span><span>.
+</span><span style=color:#ffb454>root@nixos:/#</span><span> bootctl update
+</span><span style=color:#ffb454>Skipping </span><span style=color:#c2d94c>"/boot/efi/EFI/systemd/systemd-bootx64.efi"</span><span>, since same boot loader version in place already.
+</span><span style=color:#ffb454>Skipping </span><span style=color:#c2d94c>"/boot/efi/EFI/BOOT/BOOTX64.EFI"</span><span>, since same boot loader version in place already.
+</span><span>
+</span><span>
+</span><span style=color:#ffb454>root@dev20:/boot#</span><span> bootctl install
+</span><span style=color:#ffb454>Copied </span><span style=color:#c2d94c>"/usr/lib/systemd/boot/efi/systemd-bootx64.efi"</span><span> to </span><span style=color:#c2d94c>"/boot/efi/EFI/systemd/systemd-bootx64.efi"</span><span>.
+</span><span style=color:#ffb454>Copied </span><span style=color:#c2d94c>"/usr/lib/systemd/boot/efi/systemd-bootx64.efi"</span><span> to </span><span style=color:#c2d94c>"/boot/efi/EFI/BOOT/BOOTX64.EFI"</span><span>.
+</span><span style=color:#ffb454>Random</span><span> seed file /boot/efi/loader/random-seed successfully written (512 bytes)</span><span style=color:#f07178>.
+</span><span style=color:#ffb454>Successfully</span><span> initialized system token in EFI variable with 512 bytes.
+</span><span style=color:#ffb454>Created</span><span> EFI boot entry </span><span style=color:#c2d94c>"Linux Boot Manager"</span><span>.
+</span></code></pre></section></article></main></div>

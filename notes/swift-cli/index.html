@@ -1,0 +1,265 @@
+<!doctype html><html class="dark light"><head><meta charset=UTF-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1.0" name=viewport><title>
+         swift cli
+        
+    </title><meta content="swift cli" property=og:title><meta content="An elegant and understated" property=og:description><meta content="An elegant and understated" name=description><link href=/icon/favicon.png rel=icon type=image/png><link href=https://ashang.github.io/zz/fonts.css rel=stylesheet><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script><script async id=MathJax-script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><link href=https://ashang.github.io/zz/atom.xml rel=alternate title=atbb type=application/atom+xml><link href=https://ashang.github.io/zz/theme/light.css rel=stylesheet><link href=https://ashang.github.io/zz/theme/dark.css id=darkModeStyle rel=stylesheet><link href=https://ashang.github.io/zz/main.css media=screen rel=stylesheet><body><div class=content><header><div class=main><a href=https://ashang.github.io/zz/>atbb</a><div class=socials><a class=social href=https://github.com/ashang/ rel=me> <img alt=github src=/social_icons/github.svg> </a></div></div><nav><a href=$BASE_URL/search/ style=margin-left:.7em>Search</a><a href=/notes style=margin-left:.7em>/notes</a><a href=/posts style=margin-left:.7em>/posts</a><a href=/gallery style=margin-left:.7em>/gallery</a><a href=/tags style=margin-left:.7em>/tags</a><a href=/projects style=margin-left:.7em>/projects</a> | <a href=javascript:void(0) id=dark-mode-toggle onclick=toggleTheme()> <img id=sun-icon src=/feather/sun.svg style=filter:invert(1)> <img id=moon-icon src=/feather/moon.svg> </a><script src=https://ashang.github.io/zz/js/themetoggle.js></script></nav></header><main><article><div class=title><div class=page-header>swift cli<span class=primary-color style=font-size:1.6em>.</span></div><div class=meta>Posted on <time>2025-08-12</time></div></div><h1>Table of Contents</h1><ul><li><a href=https://ashang.github.io/zz/notes/swift-cli/#10-09-42-aaron-localhost-just-swift>10:09:42 aaron@localhost:~/just/swift</a><li><a href=https://ashang.github.io/zz/notes/swift-cli/#10-16-51-aaron-localhost-just-swift>10:16:51 aaron@localhost:~/just/swift</a><li><a href=https://ashang.github.io/zz/notes/swift-cli/#10-16-56-aaron-localhost-just-swift>10:16:56 aaron@localhost:~/just/swift</a><li><a href=https://ashang.github.io/zz/notes/swift-cli/#10-17-09-aaron-localhost-just-swift>10:17:09 aaron@localhost:~/just/swift</a></ul><section class=body><p>人的大腦有 800 億+ 個神經元，每個神經元有 200 - 300 個突觸。神經元之間通過突觸進行連接，構成了一個可以進行智能思考的神經元網絡。<p>大腦有兩種記憶模式：短時記憶 和 長時記憶。短時記憶可以讓人們回憶起幾秒鐘甚至幾分鐘之前的事情，而長時記憶則可以讓人回想起更久遠的信息。<p>可惜，短時記憶有著容量限制。有人研究認為其容量是 個，但也有人研究發現人類只有 4 個短時記憶的容量，因此也稱為工作記憶。工作記憶的時效之所以非常短暫，是由於它依靠大量神經元細胞的瞬時性放電來存儲信息。<p><img alt=圖片來源：https://www.scotthyoung.com/blog/2019/04/24/working-memory/ src=https://www.scotthyoung.com/blog/wp-content/uploads/2019/03/wm-vs-ltm.png><p>而長時記憶則是記錄在神經元細胞之間相互連接的突觸之中。突觸連接的形態，構成了人們的長時記憶。單個突觸存儲的信息很有限，只能存儲碎片化的信息；但是通過許多個相互連接的突觸和突觸集簇就可以儲存具有聚類和模式特徵的龐大而復雜的信息了。當突觸不斷受到某種信息的刺激，相應的連接就會得到加強，長時記憶就會更加持久； 反之，如果某種信息很少被突觸感受到，相應的突觸連接就會萎縮，長時記憶就會被遺忘。<p>最近有研究表明，短時記憶與長時記憶之間有著關聯。當短時記憶更專注時，大腦就會通過預測性編碼（Predictive Coding）機制將短時記憶的信息反饋到長時記憶中；而如果短時記憶所需要記憶的內容太多，超過了容量限制時，預測性編碼機制的效率就會大為下降，短時記憶的信息也就很難進入到長時記憶中。<p>1956年，美國心理學家 Georg Miller 發表了一篇題為《神奇數7加減2》(The Magical Number Seven, Plus or Minus Two)的論文，根據複述 3 至 12 位隨機排列數字表的實驗結果，發現信息一次呈現後，被試能回憶的最大數量——短時記憶的容量一般為7±2個。<p>圖片來源：https://www.scotthyoung.com/blog/2019/04/24/working-memory/<p>「類腦式」知識管理的 6 大特徵<ol><li><p>最小信息模塊存儲 與傳統的知識管理以文件形式存儲信息不同，「類腦式」的知識管理應該支持將知識拆分為最小的信息模塊進行存儲。一篇文章、一個文件應該是由許多個信息模塊組合而成。 <img alt=圖片來源：https://www.scotthyoung.com/blog/2019/04/24/working-memory/ src=https://www.scotthyoung.com/blog/wp-content/uploads/2019/03/break-apart.png></p><li><p>層次型動態關係網絡 與傳統的知識管理以簡單的 “文件夾 - 文件” 方式管理內容不同，「類腦式」的知識管理應該能夠支持以關係網絡的方式管理內容，即內容之間可以建立多維度的動態關係連接，並且可以自頂向下，或者自下向上構建出多層級的複雜知識網絡。 <img alt=圖片來源：https://www.scotthyoung.com/blog/2019/04/24/working-memory/ src=https://www.scotthyoung.com/blog/wp-content/uploads/2019/03/list-vs-hierarchy.png></p><li><p>多維線性敘事 「類腦式」的知識管理應該能非常方便地進行多維度的線性敘事，無需像 Wiki 在各種詞條中跳轉而迷失敘事主線，也無需像傳統筆記應用那樣需要從頭開始撰寫長篇大論，「類腦式」應該只需要將信息模塊串聯起來即可，多個維度的信息可以嵌入其中。 <img alt=圖片來源：https://www.scotthyoung.com/blog/2019/04/24/working-memory/ src=https://www.scotthyoung.com/blog/wp-content/uploads/2019/03/fractolistic-chunks.png></p><li><p>發散式信息擴展 在傳統的知識管理中，內容大都是孤立的，內容與內容之間要么沒有任何連接，要么需要人為添加和維護，非常繁瑣且枯燥。 「類腦式」的知識管理則應該能夠為內容提供多場景、多維度的發散式信息擴展，幫助人們與其他可能的信息建立關聯，也可以更多地強化相關信息的記憶。 <img alt=圖片來源：https://www.scotthyoung.com/blog/2019/04/24/working-memory/ src=https://www.scotthyoung.com/blog/wp-content/uploads/2019/03/piano-breakdown.png></p><li><p>最少切換工作上下文 人的工作記憶是非常有限的，只有 4 個容量空間，要有效的提升工作效率，應該盡可能地保持專注，避免切換工作上下文。可惜，傳統的知識管理幾乎都違反了這個規則，人們需要新建文章才能記錄忽然而至的靈感；需要切換到其他界面或應用才能創建知識大綱和框架；需要切換到另一界面才能搜索查看某篇文章的某段內容；人們甚至需要在眾多的 Tab 頁面中來回切換尋找所需的內容... 很顯然，這些都在無情地沖洗著工作記憶，降低大腦的效率。 <img alt=圖片來源：https://www.scotthyoung.com/blog/2019/04/24/working-memory/ src=https://www.scotthyoung.com/blog/wp-content/uploads/2019/03/central-executive.png></p><li><p>信息可視化 視覺信息佔了人類大腦輸入信息的 85% ，可視化的信息帶來了更豐富，更有啟發性的洞察和聯想。 「類腦式」知識管理應該提供有效的、富有啟發性的信息可視化工具，幫助人類更好地理解和發掘複雜的信息模式和知識網絡。 <img alt=圖片來源：https://www.scotthyoung.com/blog/2019/04/24/working-memory/ src=https://www.scotthyoung.com/blog/wp-content/uploads/2019/03/summarize-vs-visualize.png></p></ol><p>人的大腦有 800 億+ 個神經元，每個神經元有 200 - 300 個突觸。神經元之間通過突觸進行連接，構成了一個可以進行智能思考的神經元網絡。<p>大腦有兩種記憶模式：短時記憶 和 長時記憶。短時記憶可以讓人們回憶起幾秒鐘甚至幾分鐘之前的事情，而長時記憶則可以讓人回想起更久遠的信息。<p>可惜，短時記憶有著容量限制。有人研究認為其容量是 個，但也有人研究發現人類只有 4 個短時記憶的容量，因此也稱為工作記憶。工作記憶的時效之所以非常短暫，是由於它依靠大量神經元細胞的瞬時性放電來存儲信息。<p><img alt=圖片來源：https://www.scotthyoung.com/blog/2019/04/24/working-memory/ src=https://www.scotthyoung.com/blog/wp-content/uploads/2019/03/wm-vs-ltm.png><p>而長時記憶則是記錄在神經元細胞之間相互連接的突觸之中。突觸連接的形態，構成了人們的長時記憶。單個突觸存儲的信息很有限，只能存儲碎片化的信息；但是通過許多個相互連接的突觸和突觸集簇就可以儲存具有聚類和模式特徵的龐大而復雜的信息了。當突觸不斷受到某種信息的刺激，相應的連接就會得到加強，長時記憶就會更加持久； 反之，如果某種信息很少被突觸感受到，相應的突觸連接就會萎縮，長時記憶就會被遺忘。<p>最近有研究表明，短時記憶與長時記憶之間有著關聯。當短時記憶更專注時，大腦就會通過預測性編碼（Predictive Coding）機制將短時記憶的信息反饋到長時記憶中；而如果短時記憶所需要記憶的內容太多，超過了容量限制時，預測性編碼機制的效率就會大為下降，短時記憶的信息也就很難進入到長時記憶中。<p>Memex - 布什的「類腦式」知識管理系統<p>早在 1945 年，身為美國科學研究與發展辦公室主任的萬尼瓦爾·布什（ Vannevar Bush ）在 The Atlantic 雜誌上發表了一篇對後世影響深遠的著名文章「As We May Think」 。在文章中，他構想了一個用於記錄、存儲、組織和瀏覽個人知識庫的設備：Memex。<p>布什把 Memex 描繪成一個書桌，其中能夠存放很多微縮膠卷，通過一套電子和機械裝置，人們可以非常方便地將文件、照片、筆記等信息存儲到微縮膠片中，並且可以很方便地索引、查看這些信息。更特別的是，人們還可以用一種線性序列重新組織這些信息，將它們形成一個信息脈絡( Associative Trail )，用來模擬人類大腦的工作模式：存儲和讀取大量的信息，並再通過某種線索將它們組織起來。<p><img alt="生活雜誌 1945年 9月刊 插圖" src=https://miro.medium.com/max/548/0*0dy6qEZ379jd3c4K.jpg><p>布什認為 Memex 應該是一套私人文件和圖書館系統，它可以讓人們訪問巨大的易於檢索的知識片段，還可以讓人們創建個性化的信息脈絡和備註，並隨時將這些信息脈絡分享給其他人。<p>他在文中有一段這樣的陳述：<p>很顯然，布什認為理想型的知識管理是「類腦式」的，而 Memex 是他所構想的一個原型系統，這個原型在日後激發了個人電腦、圖形界面、以及互聯網和萬維網的誕生。<hr><p>NLS - 恩格爾巴特的增強人類智能係統<p>到了 1960年代，也就是 Memex - 布什的「類腦式」知識管理系統 的創想被公開 15 年之後，深受布什影響的道格拉斯.恩格爾巴特（Douglas Engelbart）提出了一套人機協作系統： NLS （ oN-Line System）。在這個系統中，恩格爾巴特提出了包括 鼠標、超文本鏈接、多窗口界面等概念，這些構成了後來個人電腦的人機界面雛型。<p>NLS 是1962年恩格爾巴特在其論文《 增強人類智能：一種概念性的框架 》中所設想出來的，後來他在1968年舊金山的一個計算機相關會議上進行了演示，這次演示被後人稱為：The Mother of All Demos。<p><img alt=NLS：基礎生產力工作站：帶按鍵的桌子，分離式鍵盤、鼠標和獨立顯示器 src=https://www.dougengelbart.org/images/pix/img0008.jpg><p>NLS 其實只是恩格爾巴特的增強係統理論（ Augment System ）的一個具體實現。他期望計算機能夠提升人類的智能水平，他在 1986 年的一次增強知識工作坊（ Augmented Knowledge Workshop )裡完整地介紹過這套思想。其中精彩的片段摘錄如下：<p>有許多發明、技巧、方法和組織方式被集成到了工作環境之中，以增強人類的能力。把這些能力組合在一起的系統，我稱之為： 增強系統（Augmentation System）。<p>我把增強系統分為兩個子系統，一個是工具系統（ Tool Systerm），它包括了所有的硬件、軟件和其他人造物； 剩下的其他部分則是人因係統（ Human System）。人因係統括了我們的自然語言，概念，形式等等。<p>湧現的信息技術將會不斷地創新工具系統，使得人因係統中的大多數元素得以提升和取代，但最終的結果是能夠讓人類知識工作的能力得到巨大的提升。<p>這讓我專注在文檔系統 - 因為它涉及了知識、計劃、論證等等，它對幫助我們更好地攀登知識樹至關重要，它也可以很好地體現出提升知識協作的重要性。<p>我至今還沒有清晰看到人類如何能獲得新的能力，或者它們將從何而來。現在有不少讓計算機變得更快和更智能的方式，但是卻沒有讓計算機能夠增強知識工作者創造性思考和工作的方式。<p>顯然，恩格爾巴特並非僅僅在創建人機交互界面，而是在創建一種增強人類智能的知識管理系統，以提升知識工作者創造知識和管理知識的效率。只是，這樣的文檔系統至今還未完全被實現。<p>Memex - 布什的「類腦式」知識管理系統<p>早在 1945 年，身為美國科學研究與發展辦公室主任的萬尼瓦爾·布什（ Vannevar Bush ）在 The Atlantic 雜誌上發表了一篇對後世影響深遠的著名文章「As We May Think」 。在文章中，他構想了一個用於記錄、存儲、組織和瀏覽個人知識庫的設備：Memex。<p>布什把 Memex 描繪成一個書桌，其中能夠存放很多微縮膠卷，通過一套電子和機械裝置，人們可以非常方便地將文件、照片、筆記等信息存儲到微縮膠片中，並且可以很方便地索引、查看這些信息。更特別的是，人們還可以用一種線性序列重新組織這些信息，將它們形成一個信息脈絡( Associative Trail )，用來模擬人類大腦的工作模式：存儲和讀取大量的信息，並再通過某種線索將它們組織起來。<p><img alt="生活雜誌 1945年 9月刊 插圖" src=https://miro.medium.com/max/548/0*0dy6qEZ379jd3c4K.jpg><p>布什認為 Memex 應該是一套私人文件和圖書館系統，它可以讓人們訪問巨大的易於檢索的知識片段，還可以讓人們創建個性化的信息脈絡和備註，並隨時將這些信息脈絡分享給其他人。<p>他在文中有一段這樣的陳述：<p>很顯然，布什認為理想型的知識管理是「類腦式」的，而 Memex 是他所構想的一個原型系統，這個原型在日後激發了個人電腦、圖形界面、以及互聯網和萬維網的誕生。<p>工作台式界面<p>一位手工藝者，通常都會擁有一個工作台，製作手工藝品所需的各種工具就擺放在工作台旁邊，觸手可及，他只需專注在工作台上正在創作的工藝品即可。<p><img alt=圖片來源：https://www.scotthyoung.com/blog/2019/04/24/working-memory/ src=https://www.scotthyoung.com/blog/wp-content/uploads/2019/03/workbench.png><p>Lattics 也為知識工作者提供了這樣一個工作台。它沒有多窗口，沒有多層級，甚至沒有 Tab頁面。知識創作所需的工具和內容都在同一層界面上平鋪。在這個界面上，你可以創建項目，可以創建文章，可以創建卡片；在這個界面上，你可以拖拽移動各種內容； 在這個界面上，你可以隨時搜索需要的內容並修改它； 在這個界面上，你可以在正文中查看詞條信息，無需跳轉離開，只需在浮窗中即可查看和編輯； 在這個界面上，你可以同時打開兩篇文章，以左右並列或者上下並列的方式對照閱讀和修改。<p>顯然，這樣的工作台式界面可以讓大腦更加專注，更容易進入心流，也更容易讓短時記憶轉化為長時記憶。<p>https://www.theatlantic.com/magazine/archive/1945/07/as-we-may-think/303881/<pre class=language-sh data-lang=sh style=background:#0f1419;color:#bfbab0><code class=language-sh data-lang=sh><span style=color:#ffb454>$</span><span> swift package init</span><span style=color:#f29718> --name</span><span> MyCLI</span><span style=color:#f29718> --type</span><span> executable
+</span><span style=color:#ffb454>Creating</span><span> executable package: MyCLI
+</span><span style=color:#ffb454>Creating</span><span> Package.swift
+</span><span style=color:#ffb454>Creating</span><span> .gitignore
+</span><span style=color:#ffb454>Creating</span><span> Sources/
+</span><span style=color:#ffb454>Creating</span><span> Sources/main.swift
+</span><span>
+</span><span style=color:#ffb454>$</span><span> tree
+</span><span style=color:#f07178>.
+</span><span style=color:#f29668>|</span><span style=color:#ffb454>____.gitignore
+</span><span style=color:#f29668>|</span><span style=color:#ffb454>____Package.swift
+</span><span style=color:#f29668>|</span><span style=color:#ffb454>____Sources
+</span><span style=color:#f29668>| |</span><span style=color:#ffb454>____main.swift
+</span><span>
+</span></code></pre><pre style=background:#0f1419;color:#bfbab0><code><span>$ cat Package.swift
+</span><span>// swift-tools-version: 5.9
+</span><span>// The swift-tools-version declares the minimum version of Swift required to build this package.
+</span><span>
+</span><span>import PackageDescription
+</span><span>
+</span><span>let package = Package(
+</span><span>    name: "MyCLI",
+</span><span>    targets: [
+</span><span>        // Targets are the basic building blocks of a package, defining a module or a test suite.
+</span><span>        // Targets can depend on other targets in this package and products from dependencies.
+</span><span>        .executableTarget(
+</span><span>            name: "MyCLI"),
+</span><span>    ]
+</span><span>)
+</span><span>
+</span><span>$ cat .gitignore
+</span><span>.DS_Store
+</span><span>/.build
+</span><span>/Packages
+</span><span>xcuserdata/
+</span><span>DerivedData/
+</span><span>.swiftpm/configuration/registries.json
+</span><span>.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+</span><span>.netrc
+</span><span>
+</span><span>$ swift run MyCLI
+</span><span>Building for debugging...
+</span><span>[3/3] Linking MyCLI
+</span><span>Build complete! (1.61s)
+</span><span>Hello, world!
+</span><span>
+</span><span>$ swift run MyCLI
+</span><span>Updating https://github.com/apple/example-package-figlet
+</span><span>error: Couldn’t fetch updates from remote repositories:
+</span><span>    fatal: unable to access 'https://github.com/apple/example-package-figlet/': Failure when receiving data from the peer
+</span><span>
+</span><span>$ swift run MyCLI
+</span><span>Updating https://github.com/apple/example-package-figlet
+</span><span>Updated https://github.com/apple/example-package-figlet (20.08s)
+</span><span>Fetching https://github.com/apple/swift-argument-parser
+</span><span>warning: 'swift-argument-parser': skipping cache due to an error: Failed to clone repository https://github.com/apple/swift-argument-parser:
+</span><span>    Cloning into bare repository '/Users/aaron/Library/Caches/org.swift.swiftpm/repositories/swift-argument-parser-71d4b286'...
+</span><span>    error: RPC failed; curl 28 Failed to connect to github.com port 443 after 75001 ms: Couldn't connect to server
+</span><span>    fatal: expected flush after ref listing
+</span><span>Fetched https://github.com/apple/swift-argument-parser (126.90s)
+</span><span>Computing version for https://github.com/apple/swift-argument-parser
+</span><span>Computed https://github.com/apple/swift-argument-parser at 1.3.0 (1.67s)
+</span><span>Computed https://github.com/apple/swift-argument-parser at 1.3.0 (0.00s)
+</span><span>Creating working copy for https://github.com/apple/swift-argument-parser
+</span><span>Working copy of https://github.com/apple/swift-argument-parser resolved at 1.3.0
+</span><span>Building for debugging...
+</span><span>[47/47] Linking MyCLI
+</span><span>Build complete! (2.06s)
+</span><span>Error: Missing expected argument '--input &LTinput>'
+</span><span>
+</span><span>USAGE: figlet-tool --input &LTinput>
+</span><span>
+</span><span>OPTIONS:
+</span><span>  --input &LTinput>         Specify the input
+</span><span>  -h, --help              Show help information.
+</span><span>
+</span><span>
+</span><span>$ swift run MyCLI
+</span><span>Building for debugging...
+</span><span>Build complete! (0.16s)
+</span><span>Error: Missing expected argument '--input &LTinput>'
+</span><span>
+</span><span>USAGE: figlet-tool --input &LTinput>
+</span><span>
+</span><span>OPTIONS:
+</span><span>  --input &LTinput>         Specify the input
+</span><span>  -h, --help              Show help information.
+</span><span>
+</span><span>
+</span><span>$ swift run MyCLI --input "HI"
+</span><span>Building for debugging...
+</span><span>error: emit-module command failed with exit code 1 (use -v to see invocation)
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:20:8: error: invalid redeclaration of 'FigletTool'
+</span><span>struct FigletTool: ParsableCommand {
+</span><span>       ^
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:12:8: note: 'FigletTool' previously declared here
+</span><span>struct FigletTool {
+</span><span>       ^
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:20:8: error: invalid redeclaration of 'FigletTool'
+</span><span>struct FigletTool: ParsableCommand {
+</span><span>       ^
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:12:8: note: 'FigletTool' previously declared here
+</span><span>struct FigletTool {
+</span><span>       ^
+</span><span>error: fatalError
+</span><span>
+</span><span>
+</span><span>$ cat Sources/MyCLI.swift
+</span><span>import Figlet
+</span><span>import ArgumentParser
+</span><span>
+</span><span>//导入的包保存在哪里？
+</span><span>//You can either have a main.swift file or a @main entrypoint, but not both.
+</span><span>@main
+</span><span>//struct FigletTool {
+</span><span>//  static func main() {
+</span><span>//    Figlet.say("Hello, Swift!")
+</span><span>//  }
+</span><span>//}
+</span><span>
+</span><span>//Need --parameters: swift run MyCLI --input 'Hello, world!'
+</span><span>struct FigletTool: ParsableCommand {
+</span><span>  @Option(help: "Specify the input")
+</span><span>  public var input: String
+</span><span>
+</span><span>  public func run() throws {
+</span><span>    Figlet.say(self.input)
+</span><span>  }
+</span><span>
+</span><span>  static func main() {
+</span><span>    Figlet.say("Hello, Swift!")
+</span><span>  }
+</span><span>}
+</span><span>
+</span><span>$ swift run MyCLI --input "HI"
+</span><span>Building for debugging...
+</span><span>[3/3] Linking MyCLI
+</span><span>Build complete! (1.31s)
+</span><span>  _   _   ___
+</span><span> | | | | |_ _|
+</span><span> | |_| |  | |
+</span><span> |  _  |  | |
+</span><span> |_| |_| |___|
+</span><span>
+</span><span>$ swift run MyCLI --input "HI"
+</span><span>Building for debugging...
+</span><span>error: emit-module command failed with exit code 1 (use -v to see invocation)
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:25:17: error: expected '(' in argument list of function declaration
+</span><span>  static func my-run() {
+</span><span>                ^
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:25:17: error: consecutive declarations on a line must be separated by ';'
+</span><span>  static func my-run() {
+</span><span>                ^
+</span><span>                ;
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:25:17: error: expected declaration
+</span><span>  static func my-run() {
+</span><span>                ^
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:14:8: note: in declaration of 'FigletTool'
+</span><span>struct FigletTool: ParsableCommand {
+</span><span>       ^
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:25:15: error: expected '{' in body of function declaration
+</span><span>  static func my-run() {
+</span><span>              ^
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:25:17: error: expected '(' in argument list of function declaration
+</span><span>  static func my-run() {
+</span><span>                ^
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:25:17: error: consecutive declarations on a line must be separated by ';'
+</span><span>  static func my-run() {
+</span><span>                ^
+</span><span>                ;
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:25:17: error: expected declaration
+</span><span>  static func my-run() {
+</span><span>                ^
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:14:8: note: in declaration of 'FigletTool'
+</span><span>struct FigletTool: ParsableCommand {
+</span><span>       ^
+</span><span>/Users/aaron/just/swift-cli/Sources/MyCLI.swift:25:15: error: expected '{' in body of function declaration
+</span><span>  static func my-run() {
+</span><span>              ^
+</span><span>error: fatalError
+</span><span>
+</span><span>$ cat Sources/MyCLI.swift
+</span><span>import Figlet
+</span><span>import ArgumentParser
+</span><span>
+</span><span>//导入的包保存在哪里？
+</span><span>//You can either have a main.swift file or a @main entrypoint, but not both.
+</span><span>@main
+</span><span>//struct FigletTool {
+</span><span>//  static func main() {
+</span><span>//    Figlet.say("Hello, Swift!")
+</span><span>//  }
+</span><span>//}
+</span><span>
+</span><span>//Need --parameters: swift run MyCLI --input 'Hello, world!'
+</span><span>struct FigletTool: ParsableCommand {
+</span><span>  @Option(help: "Specify the input")
+</span><span>  public var input: String
+</span><span>
+</span><span>  public func run() throws {
+</span><span>    Figlet.say(self.input)
+</span><span>  }
+</span><span>
+</span><span>  //static func main() {
+</span><span>  //static func run() {
+</span><span>  static func my_run() {
+</span><span>    Figlet.say("Hello, Swift!")
+</span><span>  }
+</span><span>}
+</span><span>
+</span><span>$ swift run MyCLI --input "HI"
+</span><span>Building for debugging...
+</span><span>[3/3] Linking MyCLI
+</span><span>Build complete! (1.48s)
+</span><span>  _   _   ___
+</span><span> | | | | |_ _|
+</span><span> | |_| |  | |
+</span><span> |  _  |  | |
+</span><span> |_| |_| |___|
+</span><span>
+</span><span>
+</span><span>$ mv Sources/main.swift Sources/main.swift--
+</span><span>Sources/main.swift -> Sources/main.swift--
+</span><span>
+</span><span>$ swift run MyCLI --input "HI"
+</span><span>warning: 'swift-cli': found 1 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+</span><span>    /Users/aaron/just/swift-cli/Sources/main.swift--
+</span><span>Building for debugging...
+</span><span>Build complete! (0.26s)
+</span><span>  _   _   ___
+</span><span> | | | | |_ _|
+</span><span> | |_| |  | |
+</span><span> |  _  |  | |
+</span><span> |_| |_| |___|
+</span></code></pre><p>$ vapor new HelloVapor Cloning template... Error: Cloning into '/Users/aaron/just/swift/.vapor-template'... fatal: unable to access 'https://github.com/vapor/template/': Failed to connect to github.com port 443 after 75004 ms: Couldn't connect to server<h1 id=10-09-42-aaron-localhost-just-swift>10:09:42 aaron@localhost:~/just/swift</h1><p>$ vapor new HelloVapor Cloning template... name: HelloVapor Would you like to use Fluent (ORM)? (--fluent/--no-fluent) y/n> ConsoleKit/Terminal.swift:111: Fatal error: Received EOF on stdin; unable to read input. Stopping here. Trace/BPT trap: 5<h1 id=10-16-51-aaron-localhost-just-swift>10:16:51 aaron@localhost:~/just/swift</h1><p>$ vapor new HelloVapor Cloning template... Error: Error Domain=NSCocoaErrorDomain Code=516 "The file “HelloVapor” couldn’t be saved in the folder “swift” because a file with the same name already exists." UserInfo={NSFilePath=/Users/aaron/just/swift/HelloVapor, NSUnderlyingError=0x6000025592f0 {Error Domain=NSPOSIXErrorDomain Code=17 "File exists"}}<h1 id=10-16-56-aaron-localhost-just-swift>10:16:56 aaron@localhost:~/just/swift</h1><p>$ mv HelloVapor/ HelloVapor-- HelloVapor/ -> HelloVapor--<h1 id=10-17-09-aaron-localhost-just-swift>10:17:09 aaron@localhost:~/just/swift</h1><p>$ vapor new HelloVapor Cloning template... name: HelloVapor Would you like to use Fluent (ORM)? (--fluent/--no-fluent) y/n> n fluent: No Would you like to use Leaf (templating)? (--leaf/--no-leaf) y/n> n leaf: No Generating project files<ul><li><p>Package.swift</p><li><p>entrypoint.swift</p><li><p>configure.swift</p><li><p>routes.swift</p><li><p>.gitkeep</p><li><p>AppTests.swift</p><li><p>.gitkeep</p><li><p>Dockerfile</p><li><p>docker-compose.yml</p><li><p>.gitignore</p><li><p>.dockerignore Creating git repository Adding first commit</p> <pre style=background:#0f1419;color:#bfbab0><code><span>                                                        **
+</span><span>                                                      **~~**
+</span><span>                                                    **~~~~~~**
+</span><span>                                                  **~~~~~~~~~~**
+</span><span>                                                **~~~~~~~~~~~~~~**
+</span><span>                                              **~~~~~~~~~~~~~~~~~~**
+</span><span>                                            **~~~~~~~~~~~~~~~~~~~~~~**
+</span><span>                                           **~~~~~~~~~~~~~~~~~~~~~~~~**
+</span><span>                                          **~~~~~~~~~~~~~~~~~~~~~~~~~~**
+</span><span>                                         **~~~~~~~~~~~~~~~~~~~~~~~~~~~~**
+</span><span>                                         **~~~~~~~~~~~~~~~~~~~~~~~~~~~~**
+</span><span>                                         **~~~~~~~~~~~~~~~~~~~~~++++~~~**
+</span><span>                                          **~~~~~~~~~~~~~~~~~~~++++~~~**
+</span><span>                                           ***~~~~~~~~~~~~~~~++++~~~***
+</span><span>                                             ****~~~~~~~~~~++++~~****
+</span><span>                                                *****~~~~~~~~~*****
+</span><span>                                                   *************
+</span><span>
+</span><span>                                          _       __    ___   ___   ___
+</span><span>                                         \ \  /  / /\  | |_) / / \ | |_)
+</span><span>                                          \_\/  /_/--\ |_|   \_\_/ |_| \
+</span><span>                                            a web framework for Swift
+</span><span>
+</span><span>                                       Project HelloVapor has been created!
+</span><span>
+</span><span>                                Use cd 'HelloVapor' to enter the project directory
+</span><span>       Then open your project, for example if using Xcode type open Package.swift or code . if using VSCode
+</span></code></pre></ul><p>import Vapor<p>let app = try Application(.detect()) defer { app.shutdown() }<p>app.get("hello") { req in return "Hello, world." }<p>try app.run()<p>Non-blocking, event-driven architecture built on top of Apple's SwiftNIO.<p>curl -L https://swift-server.github.io/swiftly/swiftly-install.sh | bash<p>https://til.hashrocket.com/posts/cmin5boyyz-enable-vim-mode-in-xcode-13<p>https://til.hashrocket.com/vim<p>$ curl http://localhost:8080/user-info -X POST -d '{"name": "Tim", "age": 99}' -H "Content-Type: application/json"</section></article></main></div>

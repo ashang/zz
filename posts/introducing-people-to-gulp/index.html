@@ -1,0 +1,90 @@
+<!doctype html><html class="dark light"><head><meta charset=UTF-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1.0" name=viewport><title>
+         Gulp by example
+        
+    </title><meta content="Gulp by example" property=og:title><meta content="Showing how to use Gulp, a new javascript build system and its difference with Grunt" property=og:description><meta content="Showing how to use Gulp, a new javascript build system and its difference with Grunt" name=description><link href=/icon/favicon.png rel=icon type=image/png><link href=https://ashang.github.io/zz/fonts.css rel=stylesheet><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script><script async id=MathJax-script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><link href=https://ashang.github.io/zz/atom.xml rel=alternate title=atbb type=application/atom+xml><link href=https://ashang.github.io/zz/theme/light.css rel=stylesheet><link href=https://ashang.github.io/zz/theme/dark.css id=darkModeStyle rel=stylesheet><link href=https://ashang.github.io/zz/main.css media=screen rel=stylesheet><body><div class=content><header><div class=main><a href=https://ashang.github.io/zz/>atbb</a><div class=socials><a class=social href=https://github.com/ashang/ rel=me> <img alt=github src=/social_icons/github.svg> </a></div></div><nav><a href=$BASE_URL/search/ style=margin-left:.7em>Search</a><a href=/notes style=margin-left:.7em>/notes</a><a href=/posts style=margin-left:.7em>/posts</a><a href=/gallery style=margin-left:.7em>/gallery</a><a href=/tags style=margin-left:.7em>/tags</a><a href=/projects style=margin-left:.7em>/projects</a> | <a href=javascript:void(0) id=dark-mode-toggle onclick=toggleTheme()> <img id=sun-icon src=/feather/sun.svg style=filter:invert(1)> <img id=moon-icon src=/feather/moon.svg> </a><script src=https://ashang.github.io/zz/js/themetoggle.js></script></nav></header><main><article><div class=title><div class=page-header>Gulp by example<span class=primary-color style=font-size:1.6em>.</span></div><div class=meta>Posted on <time>2014-02-17</time></div></div><h1>Table of Contents</h1><ul><li><a href=https://ashang.github.io/zz/posts/introducing-people-to-gulp/#update-2014-07-23>UPDATE (2014/07/23)</a><li><a href=https://ashang.github.io/zz/posts/introducing-people-to-gulp/#update-2015-05-07>UPDATE (2015/05/07)</a><li><a href=https://ashang.github.io/zz/posts/introducing-people-to-gulp/#introduction>Introduction</a><li><a href=https://ashang.github.io/zz/posts/introducing-people-to-gulp/#gulp>Gulp</a><li><a href=https://ashang.github.io/zz/posts/introducing-people-to-gulp/#example>Example</a><li><a href=https://ashang.github.io/zz/posts/introducing-people-to-gulp/#conclusion>Conclusion</a></ul><section class=body><h4 id=update-2014-07-23>UPDATE (2014/07/23)</h4><p>I have updated gulp and replaced connect with browsersync (I did that already in the article with an earlier version of browser-sync but not on the <a href=https://github.com/Keats/gulp-example>example project</a> on github, it is now up to date). I also do not use coffeescript anymore, I <a href=https://ashang.github.io/zz/posts/introducing-people-to-gulp/2014-05-04_switching-to-typescript.md>switched to typescript</a> and use plain js for the gulpfile but everything in this post is still valid.<h4 id=update-2015-05-07>UPDATE (2015/05/07)</h4><p>This article was written for gulp 3. If you want to move to gulp 4, please go <a href=https://ashang.github.io/zz/posts/introducing-people-to-gulp/2015-03-20_migrating-to-gulp4.md>this article</a>.<h2 id=introduction>Introduction</h2><p>So I wanted to make changes to my <a href=https://github.com/Keats/ng-boilerplate title=ng-boilerplate>ng-boilerplate</a> project to make it simple enough for a javascript newbie to understand what was going on. The main issue was the Gruntfile and its configuration, roughly 400 lines of javascript handling all the possible tasks (watch, releasse, test, etc): it was working, but was pretty hard to see what was going on. Also having to put files in temporary directory all the time was bugging me. Enter <a href=http://gulpjs.com/ title=gulp.js>gulp.js</a> (an example project following the example described in this post is available <a href=https://github.com/Keats/gulp-example title=https://github.com/Keats/gulp-example>here</a>).<h2 id=gulp>Gulp</h2><p>Gulp uses Node.js streams (<a title="stream handbook" href=https://github.com/substack/stream-handbook>explanations here</a>), meaning it doesn't need to create files and thus is faster than Grunt. Another advantage for Gulp is that gulpfiles are actually code, not configuration like Grunt, making it very easy to understand what's going on at a glance (and shorter in my case as well). The way gulp works is the following:<ul><li>select the input files (for example all the .coffee files)<li>pass them through plugins (linting, coffeescript, concat, minify)<li>output them somewhere if needed</ul><p>Contrary to grunt, you only define the source files once, not for every plugin.<h2 id=example>Example</h2><p>I am going to use a basic sass/coffeescript project setup for the example. The project is organised the following way:<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#f07178>.
+</span><span style=color:#ffb454>├──</span><span> dist
+</span><span style=color:#ffb454>│</span><span>   ├── css
+</span><span style=color:#ffb454>│</span><span>   ├── index.html
+</span><span style=color:#ffb454>│</span><span>   └── js
+</span><span style=color:#ffb454>├──</span><span> gulpfile.coffee
+</span><span style=color:#ffb454>├──</span><span> index.html
+</span><span style=color:#ffb454>├──</span><span> coffee
+</span><span style=color:#ffb454>│</span><span>   └── </span><span style=color:#f29668>**</span><span>/</span><span style=color:#f29668>*</span><span>.coffee
+</span><span style=color:#ffb454>├──</span><span> package.json
+</span><span style=color:#ffb454>├──</span><span> README.md
+</span><span style=color:#ffb454>├──</span><span> sass
+</span><span style=color:#ffb454>│</span><span>   └── </span><span style=color:#f29668>**</span><span>/</span><span style=color:#f29668>*</span><span>.scss
+</span><span>
+</span></code></pre><p>The goal is to have automatic compilation of sass and copy of index.html and *.coffee files to the dist folder on change, automatically reloading the page when that happens. First we need to install gulp and create a gulpfile (in coffeescript for the example).<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> sudo npm install</span><span style=color:#f29718> -g</span><span> gulp </span><span style=font-style:italic;color:#5c6773># for the cli
+</span><span style=color:#ffb454>$</span><span> npm install gulp gulp-util coffee-script</span><span style=color:#f29718> --save-dev
+</span><span style=color:#ffb454>$</span><span> touch gulpfile.coffee
+</span></code></pre><p>You can run a gulp task that way:<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> gulp mytaskname
+</span><span style=color:#ffb454>$</span><span> gulp
+</span></code></pre><p>The second command will run the task called default.<p>Before modifying the file, let's think at what we will need:<ul><li>sass compiler (gulp-sass)<li>something to reload the page (browsersync)<li>coffeescript linter (gulp-coffeelint)<li>coffeescript compiler (gulp-coffee)<li>concat files (gulp-concat)<li>minify js (gulp-uglify)</ul><p>Let's install those.<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> npm install gulp-sass browser-sync gulp-coffeelint gulp-coffee gulp-concat gulp-uglify</span><span style=color:#f29718> --save-dev
+</span></code></pre><p>No need to load task the Grunt way, we can just require those the node way:<pre style=background:#0f1419;color:#bfbab0><code><span>gulp = require 'gulp'
+</span><span>gutil = require 'gulp-util'
+</span><span>
+</span><span>sass = require 'gulp-sass'
+</span><span>browserSync = require 'browser-sync'
+</span><span>coffeelint = require 'gulp-coffeelint'
+</span><span>coffee = require 'gulp-coffee'
+</span><span>concat = require 'gulp-concat'
+</span><span>uglify = require 'gulp-uglify'
+</span></code></pre><p>I like to define the sources/destinations paths right at the beginning, works for me but everyone will do that differently.<pre style=background:#0f1419;color:#bfbab0><code><span>sources =
+</span><span>  sass: 'sass/**/*.scss'
+</span><span>  html: 'index.html'
+</span><span>  coffee: 'src/**/*.coffee'
+</span><span>
+</span><span>destinations =
+</span><span>  css: 'dist/css'
+</span><span>  html: 'dist/'
+</span><span>  js: 'dist/js'
+</span></code></pre><p>Gulp has a very simple API and we are going to use 4 methods from it: task, src, dest and watch (that's pretty much the whole API).<p>The first task will be to set the server for the dev environment with the autoreload.<pre style=background:#0f1419;color:#bfbab0><code><span># Reloads the page for us
+</span><span>gulp.task 'browser-sync', ->
+</span><span>    browserSync.init null,
+</span><span>    open: false
+</span><span>    server:
+</span><span>      baseDir: "./dist"
+</span><span>    watchOptions:
+</span><span>      debounceDelay: 1000
+</span></code></pre><p>There are several plugins that reload the page but this one is the simplest I found, simply defines the files you want to watch and it will reload for you, no need for additional config. This task is not a really good example of what gulp does so let's move to a more exciting one, the sass task.<pre style=background:#0f1419;color:#bfbab0><code><span>gulp.task 'style', ->
+</span><span>  gulp.src(sources.sass) # we defined that at the top of the file
+</span><span>  .pipe(sass({outputStyle: 'compressed', errLogToConsole: true}))
+</span><span>  .pipe(gulp.dest(destinations.css))
+</span></code></pre><p>Now you can see a bit more of a magic but it's still fairly straightforward. gulp.src finds the files that matches the glob, pipe them to the sass plugin that will compile them (setting errLogToConsole to true means we won't exit gulp if we make a mistake in the sass file, good when watching), result is piped to gulp.dest which defines the destination to which we want to write the file.<p>The HTML task just copies the index.html file to the dist folder and reloads the server, you should be able to follow the code by now.<pre style=background:#0f1419;color:#bfbab0><code><span>gulp.task 'html', ->
+</span><span>  gulp.src(sources.html)
+</span><span>  .pipe(gulp.dest(destinations.html))
+</span></code></pre><p>Now the coffeescript task is more interesting because it really highlights the difference between Grunt and Gulp. With Grunt you would need to put your files into temporary folders, for example after compiling the .coffee files.<pre style=background:#0f1419;color:#bfbab0><code><span># I put linting as a separate task so we can run it by itself if we want to
+</span><span>gulp.task 'lint', ->
+</span><span>  gulp.src(sources.coffee)
+</span><span>  .pipe(coffeelint())
+</span><span>  .pipe(coffeelint.reporter())
+</span><span>
+</span><span>gulp.task 'src', ->
+</span><span>  gulp.src(sources.coffee)
+</span><span>  .pipe(coffee({bare: true}).on('error', gutil.log))
+</span><span>  .pipe(concat('app.js'))
+</span><span>  .pipe(uglify())
+</span><span>  .pipe(gulp.dest(destinations.js))
+</span></code></pre><p>I find this system quite brilliant, no need to go through temp folders just to be able to run all your tasks and it's WAY more readable than going through the config for each of these plugins you would do in Grunt.<p>The last bit to do is the watch task, ie the one used in dev to do all these things when a file changes.<pre style=background:#0f1419;color:#bfbab0><code><span>gulp.task 'watch', ->
+</span><span>  gulp.watch sources.sass, ['style']
+</span><span>  gulp.watch sources.app, ['lint', 'src', 'html']
+</span><span>  gulp.watch sources.html, ['html']
+</span><span>
+</span><span>  # And we reload our page if something changed in the output folder
+</span><span>  gulp.watch 'dist/**/**', (file) ->
+</span><span>    browserSync.reload(file.path) if file.type is "changed"
+</span></code></pre><p>And that's it, you got the whole thing set up (well...), very easy to understand even by someone that never used gulp. Any dev should be able to tell what's going on from the code itself.<p>I lied a bit when I said everything was setup. Right now there are 2 glaring issues:<ul><li>no way to make a clean build<li>we don't want to have the js minified when developing</ul><p>Let's fix that ! We need to install a few additional plugins and add a few tasks:<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> npm install gulp-clean run-sequence</span><span style=color:#f29718> --save-dev
+</span></code></pre><pre style=background:#0f1419;color:#bfbab0><code><span>gulp.task 'clean', ->
+</span><span>  gulp.src(['dist/'], {read: false}).pipe(clean())
+</span><span>
+</span><span>gulp.task 'build', ->
+</span><span>  runSequence 'clean', ['style', 'lint', 'src', 'html']
+</span><span>
+</span><span>gulp.task 'default', ['build', 'browser-sync','watch']
+</span></code></pre><p>This allows us to make a clean build and watch over the changes. For the env/prod differences (like minifying), you need to pass another argument called type when running gulp:<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> gulp</span><span style=color:#f29718> --type</span><span> prod
+</span></code></pre><p>And then retrieve that value using gulp-util and use it in the tasks:<pre style=background:#0f1419;color:#bfbab0><code><span>isProd = gutil.env.type is 'prod'
+</span><span>
+</span><span># Do your if statements in the tasks
+</span><span>.pipe(if isProd then uglify() else gutil.noop())
+</span></code></pre><p>You can find an example app using this gulpfile here <a href=https://github.com/Keats/gulp-example title=https://github.com/Keats/gulp-example>https://github.com/Keats/gulp-example</a>, and see the whole gulpfile <a title="finished gulpfile" href=https://github.com/Keats/gulp-example/blob/master/gulpfile.coffee>there</a>.<h2 id=conclusion>Conclusion</h2><p>I really like Gulp ! This feels way more simple to write and to read than Grunt was. I got my ng-boilerplate setup to be equal to how it was with Grunt in one afternoon and it certainly feels faster. If you have any comments or feedback (ie I'm doing something horribly wrong), feel free to post a comment and/or make a pull request to the example project.</section></article></main></div>

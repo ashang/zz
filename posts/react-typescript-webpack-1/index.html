@@ -1,0 +1,211 @@
+<!doctype html><html class="dark light"><head><meta charset=UTF-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1.0" name=viewport><title>
+         Setting up a React+TypeScript frontend with Webpack — Part 1
+        
+    </title><meta content="Setting up a React+TypeScript frontend with Webpack — Part 1" property=og:title><meta content="How to quickly get started with a React/TypeScript project using Webpack: the local environment" property=og:description><meta content="How to quickly get started with a React/TypeScript project using Webpack: the local environment" name=description><link href=/icon/favicon.png rel=icon type=image/png><link href=https://ashang.github.io/zz/fonts.css rel=stylesheet><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script><script async id=MathJax-script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><link href=https://ashang.github.io/zz/atom.xml rel=alternate title=atbb type=application/atom+xml><link href=https://ashang.github.io/zz/theme/light.css rel=stylesheet><link href=https://ashang.github.io/zz/theme/dark.css id=darkModeStyle rel=stylesheet><link href=https://ashang.github.io/zz/main.css media=screen rel=stylesheet><body><div class=content><header><div class=main><a href=https://ashang.github.io/zz/>atbb</a><div class=socials><a class=social href=https://github.com/ashang/ rel=me> <img alt=github src=/social_icons/github.svg> </a></div></div><nav><a href=$BASE_URL/search/ style=margin-left:.7em>Search</a><a href=/notes style=margin-left:.7em>/notes</a><a href=/posts style=margin-left:.7em>/posts</a><a href=/gallery style=margin-left:.7em>/gallery</a><a href=/tags style=margin-left:.7em>/tags</a><a href=/projects style=margin-left:.7em>/projects</a> | <a href=javascript:void(0) id=dark-mode-toggle onclick=toggleTheme()> <img id=sun-icon src=/feather/sun.svg style=filter:invert(1)> <img id=moon-icon src=/feather/moon.svg> </a><script src=https://ashang.github.io/zz/js/themetoggle.js></script></nav></header><main><article><div class=title><div class=page-header>Setting up a React+TypeScript frontend with Webpack — Part 1<span class=primary-color style=font-size:1.6em>.</span></div><div class=meta>Posted on <time>2019-10-29</time></div></div><h1>Table of Contents</h1><ul><li><a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/#typescript-setup>TypeScript setup</a><li><a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/#webpack-setup>Webpack setup</a> <ul><li><a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/#webpack-itself>Webpack itself</a><li><a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/#loaders-and-plugin>Loaders and plugin</a><li><a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/#webpack-dev-server>webpack-dev-server</a></ul><li><a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/#auto-formatting>Auto-formatting</a><li><a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/#linting>Linting</a><li><a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/#bonus-sass-handling>Bonus: Sass handling</a><li><a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/#what-s-next>What's next</a></ul><section class=body><p>Starting a new frontend project is tiresome. My usual process is to look at the last project I worked on, try to extract all the base dependencies and configuration and see if a Hello World still works after upgrading everything. This problem might be alleviated with tools such as <a href=https://github.com/facebook/create-react-app>create-react-app</a> but I personally prefer not having an abstraction layer for the configuration as it is something I always end up having to tweak. Even when using frameworks like <a href=https://nextjs.org/>Next.js</a> where the configuration is hidden, you still need to make some changes and understanding <a href=https://webpack.js.org/>Webpack</a> goes a long way in the frontend world.<p>The article is split in two parts:<ol><li>Getting a local dev environment set up: this article<li>Making it production ready: <a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/2019-11-01_react-typescript-webpack-2.md>part 2</a></ol><p>The focus for these article is to set up a build process for modern browsers with TypeScript: I am not going to pick any library other than React. State management, testing framework etc are all up to you. The slight exception to that rule is that I will use <a href=https://sass-lang.com/>Sass</a> to handle the styling rather than alternatives such as Less/CSS-in-JS. Once again, this is up to you. If you prefer to use JS for your CSS, just skip the last section of this article.<p>I am also going to use <a href=https://yarnpkg.com/lang/en/>yarn</a> as package manager but <code>npm</code> will work as well.<p>You can view the end result in <a href=https://github.com/Keats/webpack-react-typescript>https://github.com/Keats/webpack-react-typescript</a>.<h2 id=typescript-setup>TypeScript setup</h2><p><a href=https://www.typescriptlang.org/>TypeScript</a> is the most important tool for me in the frontend world. I first talked about it on this blog <a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/2014-05-04_switching-to-typescript.md>in 2014</a> and it only got better with time. This is a superset of JavaScript, simply adding types to it. I don't think static typing in dynamic languages are controversial anymore, seeing how <a href=https://sorbet.org/>many</a> <a href=http://mypy-lang.org/>languages</a> adopt it. Static typing is the ultimate form of documentation as it HAS to be correct.<p>Let's add it to the project:<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> yarn add typescript</span><span style=color:#f29718> --dev
+</span></code></pre><p>This will create your project <code>package.json</code> as well as a lock file: <code>yarn.lock</code>.<p>The next step is to create a <code>tsconfig.json</code>, containing our TypeScript configuration:<pre class=language-json data-lang=json style=background:#0f1419;color:#bfbab0><code class=language-json data-lang=json><span>{
+</span><span>  </span><span style=color:#c2d94c>"compilerOptions"</span><span style=color:#bfbab0cc>: </span><span>{
+</span><span>    </span><span style=color:#c2d94c>"module"</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"es6"</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"moduleResolution"</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"node"</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"esModuleInterop"</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>true</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"target"</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"es6"</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"jsx"</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"react"</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"sourceMap"</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>true</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"strict"</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>true</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"forceConsistentCasingInFileNames"</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>true</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"noUnusedLocals"</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>true</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"noUnusedParameters"</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>true</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"noImplicitReturns"</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>true</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"noFallthroughCasesInSwitch"</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>true</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"allowUnreachableCode"</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>false
+</span><span>  }</span><span style=color:#bfbab0cc>,
+</span><span>  </span><span style=color:#c2d94c>"include"</span><span style=color:#bfbab0cc>: </span><span>[
+</span><span>    </span><span style=color:#c2d94c>"./src/**/*"
+</span><span>  ]
+</span><span>}
+</span></code></pre><p>Let's go through them quickly:<ul><li><code>module</code> and <code>esModuleInterop</code>: ensures we use the latest module system and compatible with the Babel ecosystem<li><code>moduleResolution</code>: look into the <code>node_modules</code> folder for packages<li><code>target</code>: we target modern browsers so ES6 is fine here. If you need IE11 support, change it to <code>es5</code><li><code>jsx</code>: we use React and transpile from TypeScript directly so we use <code>react</code><li><code>sourceMap</code>: we want them<li><code>strict</code>: enable all the strict flags automatically</ul><p>All the other options are adding some additional checks, such as not allowing unused variables and a list of all the options can be found in <a href=https://www.typescriptlang.org/docs/handbook/compiler-options.html>TypeScript documentation</a>. Lastly, we set up an include path containing <code>"./src/**/*"</code>: we will put all our code in a <code>src</code> folder.<p>In this setup, we will only use TypeScript and not <a href=https://babeljs.io/>Babel</a>. It is possible to use TypeScript for typechecking only and pass the code to Babel for transpilation but, unless you need a specific Babel plugin, there are no reasons to do that nowadays. You will have to wait a few more months before getting stage 3 features - not a big deal.<p>The commit for that step can be seen in <a href=https://github.com/Keats/webpack-react-typescript/commit/a083ce1511b15c51d4a8d3ef95f2da05a669758b>https://github.com/Keats/webpack-react-typescript/commit/a083ce1511b15c51d4a8d3ef95f2da05a669758b</a>.<h2 id=webpack-setup>Webpack setup</h2><p>Let's start the slightly more complex part! Once you understand how Webpack works, this is actually pretty simple.<h3 id=webpack-itself>Webpack itself</h3><p>We first need webpack and its CLI:<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> yarn add webpack webpack-cli</span><span style=color:#f29718> --dev
+</span></code></pre><p>Let's also create a file named <code>webpack.config.js</code> as well as a <code>src</code> folder and an empty <code>index.tsx</code> file in it. Lastly, I always set up an <a href=https://editorconfig.org/>.editorconfig</a> file to let text editors sync on how to format things.<p>A very basic configuration for Webpack doing nothing would be something like:<pre class=language-js data-lang=js style=background:#0f1419;color:#bfbab0><code class=language-js data-lang=js><span style=color:#ff7733>const </span><span>path </span><span style=color:#f29668>= </span><span style=color:#f07178>require</span><span>(</span><span style=color:#c2d94c>"path"</span><span>)</span><span style=color:#bfbab0cc>;
+</span><span>
+</span><span style=font-style:italic;color:#39bae6>module</span><span style=color:#f29668>.</span><span style=font-style:italic;color:#39bae6>exports </span><span style=color:#f29668>= </span><span>{
+</span><span>    context</span><span style=color:#bfbab0cc>: </span><span>__dirname</span><span style=color:#bfbab0cc>,
+</span><span>    mode</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"development"</span><span style=color:#bfbab0cc>,
+</span><span>    entry</span><span style=color:#bfbab0cc>: </span><span>{
+</span><span>        app</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"./src/index.tsx"
+</span><span>    }</span><span style=color:#bfbab0cc>,
+</span><span>    output</span><span style=color:#bfbab0cc>: </span><span>{
+</span><span>        path</span><span style=color:#bfbab0cc>: </span><span>path</span><span style=color:#f29668>.</span><span style=color:#f07178>resolve</span><span>(__dirname</span><span style=color:#bfbab0cc>, </span><span style=color:#c2d94c>"dist"</span><span>)</span><span style=color:#bfbab0cc>,
+</span><span>        filename</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"app.[hash].js"
+</span><span>    }</span><span style=color:#bfbab0cc>,
+</span><span>    devtool</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"eval-source-map"</span><span style=color:#bfbab0cc>,
+</span><span>    resolve</span><span style=color:#bfbab0cc>: </span><span>{
+</span><span>        extensions</span><span style=color:#bfbab0cc>: </span><span>[</span><span style=color:#c2d94c>".js"</span><span style=color:#bfbab0cc>, </span><span style=color:#c2d94c>".jsx"</span><span style=color:#bfbab0cc>, </span><span style=color:#c2d94c>".ts"</span><span style=color:#bfbab0cc>, </span><span style=color:#c2d94c>".tsx"</span><span>]
+</span><span>    }</span><span style=color:#bfbab0cc>,
+</span><span>    module</span><span style=color:#bfbab0cc>: </span><span>{
+</span><span>        rules</span><span style=color:#bfbab0cc>: </span><span>[]
+</span><span>    }</span><span style=color:#bfbab0cc>,
+</span><span>}</span><span style=color:#bfbab0cc>;
+</span></code></pre><p>This means we are using <code>src/index.tsx</code> as the entry point (e.g. what Webpack is loading) and the output will be created in the <code>dist</code> directory, containing the hash in the filename for caching reasons. We use <code>eval-source-map</code> as <code>devtool</code> value as this is the best setting for development, You can see all the different values in the <a href=https://webpack.js.org/configuration/devtool/#devtool>Webpack devtool documentation</a>. Finally, we let Webpack know that it should try to load imports with no extensions as <code>.js</code>, <code>.jsx</code>, .<code>ts</code> and <code>.tsx</code> (so we can do <code>import something from "../index"</code>) and add a script to build our project.<pre class=language-diff data-lang=diff style=background:#0f1419;color:#bfbab0><code class=language-diff data-lang=diff><span>diff --git a/package.json b/package.json
+</span><span>index eb50375..1bc2df7 100644
+</span><span style=color:#c594c5>--- a/package.json
+</span><span style=color:#c594c5>+++ b/package.json
+</span><span style=color:#c594c5>@@ -1,4 +1,8 @@
+</span><span> {
+</span><span style=color:#c2d94c>+  "scripts": {
+</span><span style=color:#c2d94c>+    "build": "webpack",
+</span><span style=color:#c2d94c>+  },
+</span><span>   "devDependencies": {
+</span><span>     "typescript": "^3.6.4",
+</span><span>     "webpack": "^4.41.2",
+</span></code></pre><p>Running that script (<code>yarn build</code>) will create the <code>dist</code> folder containing a file with a name like <code>app.5730f5cdf8cb70458282.js</code>. Since we didn't write any code yet, it currently only contains Webpack's own code.<p>The commit for those changes is in <a href=https://github.com/Keats/webpack-react-typescript/commit/48fc3f342c3f4f53c30af1b457d90351f442b4f0>https://github.com/Keats/webpack-react-typescript/commit/48fc3f342c3f4f53c30af1b457d90351f442b4f0</a>.<h3 id=loaders-and-plugin>Loaders and plugin</h3><p>In this article we are aiming for a simple SPA without SSR so let's setup a super basic React application in order to actually bundle something.<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> yarn add react react-dom
+</span><span style=color:#ffb454>$</span><span> yarn add @types/react @types/react-dom</span><span style=color:#f29718> --dev
+</span></code></pre><p>React doesn't ship the TypeScript type definitions by default so we need to download them manually.<p>The simplest React code we can write in <code>src/index.tsx</code> is:<pre class=language-tsx data-lang=tsx style=background:#0f1419;color:#bfbab0><code class=language-tsx data-lang=tsx><span style=color:#ff7733>import </span><span>React </span><span style=color:#ff7733>from </span><span style=color:#c2d94c>"react"</span><span style=color:#bfbab0cc>;
+</span><span style=color:#ff7733>import </span><span>ReactDOM </span><span style=color:#ff7733>from </span><span style=color:#c2d94c>"react-dom"</span><span style=color:#bfbab0cc>;
+</span><span>
+</span><span>ReactDOM</span><span style=color:#f29668>.</span><span style=color:#ffb454>render</span><span>(</span><span style=color:#39bae690><</span><span style=color:#59c2ff>h1</span><span style=color:#39bae690>></span><span>Hello world</span><span style=color:#39bae690>&LT/</span><span style=color:#59c2ff>h1</span><span style=color:#39bae690>></span><span style=color:#bfbab0cc>, </span><span>document</span><span style=color:#f29668>.</span><span style=color:#f07178>getElementById</span><span>(</span><span style=color:#c2d94c>"root"</span><span>))</span><span style=color:#bfbab0cc>;
+</span></code></pre><p>This will render the React app in the HTML element with id <code>root</code>, which, as some of you might have noticed, doesn't exist yet.<p>There is a plugin that will handle the HTML for us: <a href=https://github.com/jantimon/html-webpack-plugin>html-webpack-plugin</a>.<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> yarn add html-webpack-plugin</span><span style=color:#f29718> --dev
+</span></code></pre><p>We are using this plugin here because we do not need to display dynamic <code>&LTmeta></code> attributes depending on the page. If you need it for SEO or other reasons, you will need to use another approach, likely involving some kind of SSR.<p>Enabling it in our <code>webpack.config.js</code> is trivial:<pre class=language-diff data-lang=diff style=background:#0f1419;color:#bfbab0><code class=language-diff data-lang=diff><span>diff --git a/webpack.config.js b/webpack.config.js
+</span><span>index 2267dfd..bcbe494 100644
+</span><span style=color:#c594c5>--- a/webpack.config.js
+</span><span style=color:#c594c5>+++ b/webpack.config.js
+</span><span style=color:#c594c5>@@ -1,4 +1,5 @@
+</span><span> const path = require("path");
+</span><span style=color:#c2d94c>+const HtmlWebpackPlugin = require("html-webpack-plugin");
+</span><span> 
+</span><span> module.exports = {
+</span><span>     context: __dirname,
+</span><span style=color:#c594c5>@@ -17,4 +18,7 @@ </span><span style=color:#59c2ff>module.exports = {
+</span><span>     module: {
+</span><span>         rules: []
+</span><span>     },
+</span><span style=color:#c2d94c>+    plugins: [
+</span><span style=color:#c2d94c>+        new HtmlWebpackPlugin({ template: "index.html" }),
+</span><span style=color:#c2d94c>+    ]
+</span><span> };
+</span></code></pre><p>The template can be something very basic such as:<pre class=language-html data-lang=html style=background:#0f1419;color:#bfbab0><code class=language-html data-lang=html><span style=color:#39bae690>&LT!</span><span style=color:#ff7733>DOCTYPE </span><span style=color:#f29718>html</span><span style=color:#39bae690>>
+</span><span style=color:#39bae690><</span><span style=color:#59c2ff>html </span><span style=color:#ffb454>lang</span><span style=color:#bfbab0cc>=</span><span style=color:#c2d94c>"en"</span><span style=color:#39bae690>>
+</span><span style=color:#39bae690><</span><span style=color:#59c2ff>head</span><span style=color:#39bae690>>
+</span><span>    </span><span style=color:#39bae690><</span><span style=color:#59c2ff>meta </span><span style=color:#ffb454>charset</span><span style=color:#bfbab0cc>=</span><span style=color:#c2d94c>"UTF-8"</span><span style=color:#39bae690>>
+</span><span>    </span><span style=color:#39bae690><</span><span style=color:#59c2ff>meta </span><span style=color:#ffb454>name</span><span style=color:#bfbab0cc>=</span><span style=color:#c2d94c>"viewport" </span><span style=color:#ffb454>content</span><span style=color:#bfbab0cc>=</span><span style=color:#c2d94c>"width=device-width, initial-scale=1.0"</span><span style=color:#39bae690>>
+</span><span>    </span><span style=color:#39bae690><</span><span style=color:#59c2ff>meta </span><span style=color:#ffb454>http-equiv</span><span style=color:#bfbab0cc>=</span><span style=color:#c2d94c>"X-UA-Compatible" </span><span style=color:#ffb454>content</span><span style=color:#bfbab0cc>=</span><span style=color:#c2d94c>"ie=edge"</span><span style=color:#39bae690>>
+</span><span>    </span><span style=color:#39bae690><</span><span style=color:#59c2ff>title</span><span style=color:#39bae690>></span><span>My project</span><span style=color:#39bae690>&LT/</span><span style=color:#59c2ff>title</span><span style=color:#39bae690>>
+</span><span style=color:#39bae690>&LT/</span><span style=color:#59c2ff>head</span><span style=color:#39bae690>>
+</span><span style=color:#39bae690><</span><span style=color:#59c2ff>body</span><span style=color:#39bae690>>
+</span><span>    </span><span style=color:#39bae690><</span><span style=color:#59c2ff>div </span><span style=color:#ffb454>id</span><span style=color:#bfbab0cc>=</span><span style=color:#c2d94c>"root"</span><span style=color:#39bae690>>&LT/</span><span style=color:#59c2ff>div</span><span style=color:#39bae690>>
+</span><span style=color:#39bae690>&LT/</span><span style=color:#59c2ff>body</span><span style=color:#39bae690>>
+</span><span style=color:#39bae690>&LT/</span><span style=color:#59c2ff>html</span><span style=color:#39bae690>>
+</span></code></pre><p>Do remember that the <code>id</code> of a container needs to match the one set in <code>index.tsx</code>.<p>Trying to run the build against at this point will give you an error about a missing loader for this type of file, referring to our <code>index.tsx</code>.<p>The commit for the above is <a href=https://github.com/Keats/webpack-react-typescript/commit/3af8820f98b3645381edfb99792700922823394b>https://github.com/Keats/webpack-react-typescript/commit/3af8820f98b3645381edfb99792700922823394b</a>.<p>Loaders are the way Webpack knows what to do with each filetype. In our case, we have these TypeScript files but we didn't tell Webpack what to do with them: we need to add a loader for it. In the case of TypeScript, we will add a plugin in addition.<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> yarn add ts-loader fork-ts-checker-webpack-plugin</span><span style=color:#f29718> --dev
+</span></code></pre><p>The reason we use a loader and a plugin is performance: the loader will only perform transpilation while the plugin will typecheck in another thread.<pre class=language-diff data-lang=diff style=background:#0f1419;color:#bfbab0><code class=language-diff data-lang=diff><span>diff --git a/webpack.config.js b/webpack.config.js
+</span><span>index bcbe494..cd657ff 100644
+</span><span style=color:#c594c5>--- a/webpack.config.js
+</span><span style=color:#c594c5>+++ b/webpack.config.js
+</span><span style=color:#c594c5>@@ -1,5 +1,6 @@
+</span><span> const path = require("path");
+</span><span> const HtmlWebpackPlugin = require("html-webpack-plugin");
+</span><span style=color:#c2d94c>+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+</span><span> 
+</span><span> module.exports = {
+</span><span>     context: __dirname,
+</span><span style=color:#c594c5>@@ -16,9 +17,19 @@ </span><span style=color:#59c2ff>module.exports = {
+</span><span>         extensions: [".js", ".jsx", ".ts", ".tsx"]
+</span><span>     },
+</span><span>     module: {
+</span><span style=color:#f07178>-        rules: []
+</span><span style=color:#c2d94c>+        rules: [
+</span><span style=color:#c2d94c>+            {
+</span><span style=color:#c2d94c>+                test: /\.(ts|tsx)$/,
+</span><span style=color:#c2d94c>+                loader: "ts-loader",
+</span><span style=color:#c2d94c>+                options: {
+</span><span style=color:#c2d94c>+                    // We use ForkTsCheckerWebpackPlugin for typechecking
+</span><span style=color:#c2d94c>+                    transpileOnly: true
+</span><span style=color:#c2d94c>+                }
+</span><span style=color:#c2d94c>+            },
+</span><span style=color:#c2d94c>+        ]
+</span><span>     },
+</span><span>     plugins: [
+</span><span>         new HtmlWebpackPlugin({ template: "index.html" }),
+</span><span style=color:#c2d94c>+        new ForkTsCheckerWebpackPlugin(),
+</span><span>     ]
+</span><span> };
+</span></code></pre><p>Those changes are in the commit <a href=https://github.com/Keats/webpack-react-typescript/commit/a3fdbade49deaffd4b5cd762021920efad0fbc8c>https://github.com/Keats/webpack-react-typescript/commit/a3fdbade49deaffd4b5cd762021920efad0fbc8c</a>.<p>Running <code>yarn build</code> again will now bundle our code: just open <code>dist/index.html</code> to check for yourself. While opening that folder, you might have noticed that there are many <code>.js</code> files in there: we never actually cleaned that folder. Nothing a Webpack plugin (<a href=https://www.npmjs.com/package/clean-webpack-plugin>clean-webpack-plugin</a>) or a <code>rm -rf dist/</code> in the script cannot solve.<p>The commit for the plugin way is <a href=https://github.com/Keats/webpack-react-typescript/commit/42ca8ba4f4ec0312d26defef610f7652a26ce40c>https://github.com/Keats/webpack-react-typescript/commit/42ca8ba4f4ec0312d26defef610f7652a26ce40c</a>.<h3 id=webpack-dev-server>webpack-dev-server</h3><p>We have our build working now but it builds from scratch every time, which sucks. Thankfully, Webpack has some nice tooling with its dev server allowing Hot Modules Replacement (HMR): live reloading of your code without having to refresh.<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> yarn add webpack-dev-server</span><span style=color:#f29718> --dev
+</span></code></pre><p>And update <code>webpack.config.js</code>:<pre class=language-diff data-lang=diff style=background:#0f1419;color:#bfbab0><code class=language-diff data-lang=diff><span>diff --git a/webpack.config.js b/webpack.config.js
+</span><span>index 9bf647a..3b576bd 100644
+</span><span style=color:#c594c5>--- a/webpack.config.js
+</span><span style=color:#c594c5>+++ b/webpack.config.js
+</span><span style=color:#c594c5>@@ -1,4 +1,5 @@
+</span><span> const path = require("path");
+</span><span style=color:#c2d94c>+const webpack = require("webpack");
+</span><span> const HtmlWebpackPlugin = require("html-webpack-plugin");
+</span><span> const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+</span><span> const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+</span><span style=color:#c594c5>@@ -29,9 +30,21 @@ </span><span style=color:#59c2ff>module.exports = {
+</span><span>         },
+</span><span>         ]
+</span><span>     },
+</span><span style=color:#c2d94c>+    devServer: {
+</span><span style=color:#c2d94c>+        contentBase: path.join(__dirname, "dist"),
+</span><span style=color:#c2d94c>+        port: 9000,
+</span><span style=color:#c2d94c>+        hot: true,
+</span><span style=color:#c2d94c>+        historyApiFallback: true,
+</span><span style=color:#c2d94c>+        overlay: true,
+</span><span style=color:#c2d94c>+        stats: "minimal"
+</span><span style=color:#c2d94c>+    },
+</span><span>     plugins: [
+</span><span>         new HtmlWebpackPlugin({ template: "index.html" }),
+</span><span style=color:#f07178>-        new ForkTsCheckerWebpackPlugin(),
+</span><span style=color:#c2d94c>+        new ForkTsCheckerWebpackPlugin({
+</span><span style=color:#c2d94c>+            // For the dev server overlay to work
+</span><span style=color:#c2d94c>+            async: false,
+</span><span style=color:#c2d94c>+        }),
+</span><span>         new CleanWebpackPlugin(),
+</span><span style=color:#c2d94c>+        new webpack.HotModuleReplacementPlugin(),
+</span><span>     ]
+</span><span> };
+</span><span>
+</span></code></pre><p>And add a new script, <code>dev</code> with a value of <code>webpack-dev-server</code>. Running <code>yarn dev</code> will now run a local server on port 9000 that will also recompiles on change and reload the components without causing a refresh: try it for yourself by changing the text <code>index.tsx</code> while having the page open.<p>Let's backtrack a bit to explain the <code>devServer</code> options though. As always, the complete documentation is available on <a href=https://webpack.js.org/configuration/dev-server/>Webpack documentation</a> but the key options there are:<ul><li><code>hot</code>: yes please, we do want HMR<li><code>historyApiFallback</code>: if your app is a SPA with navigation you will need that option enabled to not see 404s<li><code>overlay</code>: display errors as an overlay on the app, useful to ensure you're not missing it out from the terminal<li><code>stats</code>: Webpack is very noisy by default, this turns the output level to something more reasonable</ul><p>For the changes in the <code>plugins</code> section, we do disable <code>async</code> of <code>ForkTsCheckerWebpackPlugin</code> to have overlay still work as well as adding the builtin HMR plugin.<p>The commit is <a href=https://github.com/Keats/webpack-react-typescript/commit/ed546d935487f4e4350e5267261b2c6a7bac015b>https://github.com/Keats/webpack-react-typescript/commit/ed546d935487f4e4350e5267261b2c6a7bac015b</a>.<p>At this point we have a functional working setup but there are a couple of tools we can add to improve the code quality.<h2 id=auto-formatting>Auto-formatting</h2><p><a href=https://prettier.io/>Prettier</a> is a very nice tool to format pretty much every language used in the JavaScript world.<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> yarn add prettier</span><span style=color:#f29718> --dev
+</span></code></pre><p>Prettier is opinionated and as such has <a href=https://prettier.io/docs/en/options.html>few options</a> to configure. The only change I like to make is setting the maximum number of characters in a line to be 100 instead of the default 80. It can be configured directly from <code>package.json</code>.<pre class=language-js data-lang=js style=background:#0f1419;color:#bfbab0><code class=language-js data-lang=js><span>  </span><span style=color:#c2d94c>"prettier"</span><span>: {
+</span><span>    </span><span style=color:#c2d94c>"printWidth"</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>100
+</span><span>  }</span><span style=color:#bfbab0cc>,
+</span></code></pre><p>As well as a new script <code>fmt</code>: <code>prettier --write 'src/**/**.ts*'</code> that will format all TypeScript files in the <code>src</code> folder. The main issue is that for these tools to matter, they need to be enforced. An easy way to do that is via a commit hook, using something like <a href=https://www.npmjs.com/package/husky>husky</a>. As with <code>prettier</code>, we can configure <code>husky</code> easily in <code>package.json</code>:<pre class=language-js data-lang=js style=background:#0f1419;color:#bfbab0><code class=language-js data-lang=js><span>  </span><span style=color:#c2d94c>"husky"</span><span>: {
+</span><span>    </span><span style=color:#c2d94c>"hooks"</span><span style=color:#bfbab0cc>: </span><span>{
+</span><span>      </span><span style=color:#c2d94c>"pre-commit"</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"yarn fmt:check"
+</span><span>    }
+</span><span>  }</span><span style=color:#bfbab0cc>,
+</span></code></pre><p>where <code>fmt:check</code> is a new script that only checks whether there are files needing to be formatted: <code>prettier --list-different 'src/**/**.ts*'</code>.<p>The next time someones working on that project calls <code>git commit</code>, this command will be ran before and will fail if any file needs formatting. Don't forget to run this command in your CI as well!<p>The commit is <a href=https://github.com/Keats/webpack-react-typescript/commit/a464f58d80af0aa45be55bd3df87bb00d74ed958>https://github.com/Keats/webpack-react-typescript/commit/a464f58d80af0aa45be55bd3df87bb00d74ed958</a>.<h2 id=linting>Linting</h2><p>The last code quality tooling we are going to add is <a href=https://eslint.org/>ESLint</a>. Setting it up requires a few more dependencies than the other tools as we need to make it work with React, Prettier and Typescript.<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> yarn add eslint eslint-config-prettier eslint-plugin-react @typescript-eslint/eslint-plugin @typescript-eslint/parser</span><span style=color:#f29718> --dev
+</span></code></pre><p>The configuration is kept in a file named <code>.estlintrc.js</code>:<pre class=language-js data-lang=js style=background:#0f1419;color:#bfbab0><code class=language-js data-lang=js><span style=color:#ff7733>const </span><span>path </span><span style=color:#f29668>= </span><span style=color:#f07178>require</span><span>(</span><span style=color:#c2d94c>"path"</span><span>)</span><span style=color:#bfbab0cc>;
+</span><span>
+</span><span style=font-style:italic;color:#39bae6>module</span><span style=color:#f29668>.</span><span style=font-style:italic;color:#39bae6>exports </span><span style=color:#f29668>= </span><span>{
+</span><span>  parser</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"@typescript-eslint/parser"</span><span style=color:#bfbab0cc>,
+</span><span>  extends</span><span style=color:#bfbab0cc>: </span><span>[
+</span><span>    </span><span style=color:#c2d94c>"plugin:react/recommended"</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"plugin:@typescript-eslint/recommended"</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#c2d94c>"prettier/@typescript-eslint"
+</span><span>  ]</span><span style=color:#bfbab0cc>,
+</span><span>  parserOptions</span><span style=color:#bfbab0cc>: </span><span>{
+</span><span>    project</span><span style=color:#bfbab0cc>: </span><span>path</span><span style=color:#f29668>.</span><span style=color:#f07178>resolve</span><span>(__dirname</span><span style=color:#bfbab0cc>, </span><span style=color:#c2d94c>"./tsconfig.json"</span><span>)</span><span style=color:#bfbab0cc>,
+</span><span>    tsconfigRootDir</span><span style=color:#bfbab0cc>: </span><span>__dirname</span><span style=color:#bfbab0cc>,
+</span><span>    ecmaVersion</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>2018</span><span style=color:#bfbab0cc>,
+</span><span>    sourceType</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"module"
+</span><span>  }</span><span style=color:#bfbab0cc>,
+</span><span>  rules</span><span style=color:#bfbab0cc>: </span><span>{
+</span><span>    </span><span style=font-style:italic;color:#5c6773>// Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
+</span><span>    </span><span style=font-style:italic;color:#5c6773>// e.g. "@typescript-eslint/explicit-function-return-type": "off",
+</span><span>    </span><span style=color:#c2d94c>"react/prop-types"</span><span style=color:#bfbab0cc>: </span><span>[</span><span style=color:#f29718>0</span><span>]</span><span style=color:#bfbab0cc>,
+</span><span>  }</span><span style=color:#bfbab0cc>,
+</span><span>  settings</span><span style=color:#bfbab0cc>: </span><span>{
+</span><span>    react</span><span style=color:#bfbab0cc>: </span><span>{
+</span><span>      version</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>"detect" </span><span style=font-style:italic;color:#5c6773>// Tells eslint-plugin-react to automatically detect the version of React to use
+</span><span>    }
+</span><span>  }
+</span><span>}</span><span style=color:#bfbab0cc>;
+</span></code></pre><p>Essentially we tell ESLint that we are going to use TypeScript and what configuration to use for the parser, enable the recommended lints for React and TypeScript and lastly we add <code>prettier/@typescript-eslint</code> to disable all rules conflicting with <code>prettier</code>. I also disable the <code>react/prop-types</code> linting rule as we are using TypeScript and actually have strongly typed props already.<p>The linting script in our case is <code>"lint": "eslint 'src/**/**.ts*'"</code>.<p>The commit is <a href=https://github.com/Keats/webpack-react-typescript/commit/f30c07b1564457e55f9110c32ca766caf060b34d>https://github.com/Keats/webpack-react-typescript/commit/f30c07b1564457e55f9110c32ca766caf060b34d</a>.<h2 id=bonus-sass-handling>Bonus: Sass handling</h2><p>You can skip that section if you prefer using some CSS-in-JS.<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> yarn add sass-loader node-sass style-loader css-loader</span><span style=color:#f29718> --dev
+</span></code></pre><p>As you might have understood already, we need to add some <em>loaders</em> to handle Sass files in our Webpack config:<pre class=language-js data-lang=js style=background:#0f1419;color:#bfbab0><code class=language-js data-lang=js><span>{
+</span><span>    </span><span style=color:#59c2ff>test</span><span style=color:#bfbab0cc>: </span><span style=color:#95e6cb>/\.s</span><span style=color:#f29718>[ac]</span><span style=color:#95e6cb>ss</span><span style=color:#ff7733>$</span><span style=color:#95e6cb>/</span><span style=color:#ff7733>i</span><span style=color:#bfbab0cc>,
+</span><span>    </span><span style=color:#59c2ff>use</span><span style=color:#bfbab0cc>: </span><span>[
+</span><span>      </span><span style=font-style:italic;color:#5c6773>// Creates `style` nodes from JS strings injected in our index.html
+</span><span>      </span><span style=color:#c2d94c>"style-loader"</span><span style=color:#bfbab0cc>,
+</span><span>      </span><span style=font-style:italic;color:#5c6773>// Translates CSS into CommonJS
+</span><span>      </span><span style=color:#c2d94c>"css-loader"</span><span style=color:#bfbab0cc>,
+</span><span>      </span><span style=font-style:italic;color:#5c6773>// Compiles Sass to CSS
+</span><span>      </span><span style=color:#c2d94c>"sass-loader"
+</span><span>    ]
+</span><span>}
+</span></code></pre><p>And then you need to tell Webpack to load the root file by importing it into your <code>index.tsx</code> file, in my case <code>import "./style/app.scss";</code>. If you added <code>scss</code> to <code>resolve.extensions</code> in the Webpack configuration, you can skip the <code>.scss</code>. Live reload will continue to work with Sass editing: you can change the background colour and see it immediately reflected in your browser.<p>This setup will not solve the classic CSS specificity issues where some changes in a component might affect another component, unless you are well disciplined with naming classes such as using <a href=http://getbem.com/>BEM</a>. One nice automatic solution to that are <a href=https://github.com/css-modules/css-modules>CSS modules</a> but that will likely be a separate article.<p>Prettier also works with Sass so we can just add <code>.scss</code> file to the format script and it will work automatically.<p>The commit is <a href=https://github.com/Keats/webpack-react-typescript/commit/055c4785da3d167a18137a90c4ca887fddf7feed>https://github.com/Keats/webpack-react-typescript/commit/055c4785da3d167a18137a90c4ca887fddf7feed</a>, I've also run Prettier manually on the configuration files to have consistent formatting throughout the project.<h2 id=what-s-next>What's next</h2><p>With that, we have a working development setup. It is not production and deployment ready however and that is what we will look at in <a href=https://ashang.github.io/zz/posts/react-typescript-webpack-1/2019-11-01_react-typescript-webpack-2.md>the second part</a>.</section></article></main></div>

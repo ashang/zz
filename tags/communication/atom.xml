@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>atbb - communication</title>
+    <subtitle>An elegant and understated</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://ashang.github.io/zz/tags/communication/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://ashang.github.io/zz/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-11-12T00:00:00+00:00</updated>
+    <id>https://ashang.github.io/zz/tags/communication/atom.xml</id>
+    <entry xml:lang="en">
+        <title>All remote from day one: How Gitlab thrives</title>
+        <published>2023-11-12T00:00:00+00:00</published>
+        <updated>2023-11-12T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://ashang.github.io/zz/notes/all-remote/"/>
+        <id>https://ashang.github.io/zz/notes/all-remote/</id>
+        
+        <content type="html" xml:base="https://ashang.github.io/zz/notes/all-remote/">&lt;p&gt;All remote from
+day one: How
+GitLab thrives
+Sid Sijbrandij, cofounder and CEO of
+GitLab Inc., on how the organization builds
+a cohesive culture and helps its team
+members thrive in a fully remote workplace.&lt;&#x2F;p&gt;
+&lt;p&gt;GitLab’s roughly 2,100 team
+members span more than
+60 countries—and every single
+one of them works remotely. Unlike many
+companies that were abruptly forced to
+close their offices during the COVID-19
+pandemic, GitLab has embraced a remote-
+work environment from its inception in 2011.
+It is now one of the largest fully remote
+organizations in the world.&lt;&#x2F;p&gt;
+&lt;p&gt;Under cofounder and CEO Sid Sijbrandij,
+the company has evolved from an open-
+source collaboration tool for programmers
+to an end-to-end development, security,
+and operations (DevSecOps) platform
+with more than 30 million registered users.
+Its rapid growth is underpinned by a set
+of norms, systems, and processes that
+enable its global workforce to collaborate
+across time zones and schedules.
+We spoke with Sid about how GitLab team
+members stay connected, sustain a healthy
+culture, and manage their time within a
+remote and asynchronous workplace.
+One of the things that differentiates
+GitLab is that it’s fully remote. How
+have you maintained connectivity and
+built culture in this environment?&lt;&#x2F;p&gt;
+&lt;p&gt;Working remotely is easy. The challenge
+is working asynchronously. Organizations
+must create a system where everyone
+can consume information and contribute
+regardless of their level, function,
+or location. We invest in working
+practices that enable asynchronous
+communication, and we’ve committed
+to educating and supporting other
+companies through the global transition
+to remote work that started during
+COVID-19 and continues today.
+Within GitLab, our handbook, which is
+more than 2,700 web pages and available
+to the public, is a big part of what enables
+us to work asynchronously.1 When an
+employee has a question, they can almost
+always find the answer documented in our
+handbook, without having to tap someone
+on the shoulder.
+The “handbook first” system is
+embedded in the way we work. Every
+change must first be documented in the
+handbook, and all communications about
+the change include a link back to the
+handbook. We work together to make
+sure it is always up to date. For example,
+our CMSO [chief marketing and strategy
+officer] is responsible for maintaining the
+marketing section, though anyone can
+propose edits as needed.
+Effective internal communication is
+crucial in fast-paced organizations
+like GitLab. How has that manifested
+at GitLab?
+We rely on informal communication to
+develop closeness and camaraderie. Our
+onboarding process2 trains people in
+how—and how often—we communicate
+with each other: every new hire initiates
+five virtual coffee chats so they learn that
+it’s normal to schedule meetings with a
+colleague just to connect, whether it’s
+work related or not.
+In-person events are also a fantastic
+way to build this culture, but only if you’re
+intentional about how you use them. A
+lot of companies bring people together,
+then lock them in a conference room to
+sit through PowerPoint presentations for
+a couple of days. That’s a waste of time
+and money. They could have watched
+those presentations asynchronously.
+At GitLab, we spend most of our
+in-person time going on excursions,
+sharing meals, or holding an
+“un-conference,” where small groups
+discuss topics one after another. We
+use our valuable time together to build
+connections through the kind of face-to-
+face interactions that can take place only
+outside of our screens.
+What processes are in place to help
+employees manage their time in a
+remote and asynchronous working
+environment?
+We’re very thoughtful about how we
+use our time. For example, meetings
+shouldn’t just be gatherings of people
+for a conversation. Unless it’s a coffee
+chat, every meeting must have an
+agenda, and people are expected to
+read the agenda before the meeting. Our
+meetings end at the 25- or 50-minute
+mark to give people time to prepare for
+their next meeting. We also try to make
+it acceptable for people to look away
+during meetings—they manage their
+own attention and participation—and
+to interrupt politely to ask questions or
+share context, just like you would during
+in-person conversations. We take notes
+during every meeting and, when possible,
+record them so people who can’t attend
+can still hear the conversation, and we
+aim to resolve discussion with clear next
+steps, owners, and delivery dates.
+How does the culture at GitLab
+contribute to its success?&lt;&#x2F;p&gt;
+&lt;p&gt;Most important, we maintain a bias
+for action. Everyone at GitLab is
+empowered to be proactive, creative,
+and effective. We all must make
+decisions with imperfect information;
+this mindset helps us make the small
+ones more efficiently. We document
+them and maintain the ability to change
+them if necessary, but there’s cultural
+support for everyone to do what they
+feel is best, instead of calling meetings
+to debate every choice or action. We
+have a higher tolerance for mistakes
+and an appreciation for which decisions
+need discussion. Overall, this approach
+helps us to be more effective.
+How do you build and strengthen the
+culture over time?
+Culture isn’t preserved. It evolves.
+You have to measure what you want to
+reinforce. At other companies, there
+is still a lot of presenteeism out there—
+where team members are rewarded for
+just showing up, responding quickly, and
+looking like they are working day and
+night. If that’s what you reward, that’s
+what you’re going to get. It’s much better
+to reward the results. At GitLab, we
+evaluate team members using metrics
+that are relevant to their roles. For
+example, in R&amp;amp;D, we measure how many
+pieces of code land in production. What
+matters is not the number of hours you
+work—it’s the work that gets done.&lt;&#x2F;p&gt;
+&lt;p&gt;‘Culture isn’t preserved. It evolves. You have to
+measure what you want to reinforce.’&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
