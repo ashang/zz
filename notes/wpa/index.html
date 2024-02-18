@@ -1,0 +1,92 @@
+<!doctype html><html class="dark light"><head><meta charset=UTF-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1.0" name=viewport><title>
+         atbb
+        
+    </title><meta content=atbb property=og:title><meta content="An elegant and understated" property=og:description><meta content="An elegant and understated" name=description><link href=/icon/favicon.png rel=icon type=image/png><link href=https://ashang.github.io/zz/fonts.css rel=stylesheet><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script><script async id=MathJax-script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><link href=https://ashang.github.io/zz/atom.xml rel=alternate title=atbb type=application/atom+xml><link href=https://ashang.github.io/zz/theme/light.css rel=stylesheet><link href=https://ashang.github.io/zz/theme/dark.css id=darkModeStyle rel=stylesheet><link href=https://ashang.github.io/zz/main.css media=screen rel=stylesheet><body><div class=content><header><div class=main><a href=https://ashang.github.io/zz/>atbb</a><div class=socials><a class=social href=https://github.com/ashang/ rel=me> <img alt=github src=/social_icons/github.svg> </a></div></div><nav><a href=$BASE_URL/search/ style=margin-left:.7em>Search</a><a href=/notes style=margin-left:.7em>/notes</a><a href=/posts style=margin-left:.7em>/posts</a><a href=/gallery style=margin-left:.7em>/gallery</a><a href=/tags style=margin-left:.7em>/tags</a><a href=/projects style=margin-left:.7em>/projects</a> | <a href=javascript:void(0) id=dark-mode-toggle onclick=toggleTheme()> <img id=sun-icon src=/feather/sun.svg style=filter:invert(1)> <img id=moon-icon src=/feather/moon.svg> </a><script src=https://ashang.github.io/zz/js/themetoggle.js></script></nav></header><main><article><div class=title><div class=page-header><span class=primary-color style=font-size:1.6em>.</span></div><div class=meta>Posted on <time>2015-08-12</time></div></div><section class=body><pre style=background:#0f1419;color:#bfbab0><code><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: Successfully initialized wpa_supplicant
+</span><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: ioctl[SIOCSIWENCODEEXT]: Invalid argument
+</span><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: ioctl[SIOCSIWENCODEEXT]: Invalid argument
+</span><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: ctrl_iface exists and seems to be in use - cannot override it
+</span><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: Delete '/run/wpa_supplicant/wlp4s0' manually if it is not used anymore
+</span><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: Failed to initialize control interface '/run/wpa_supplicant'.
+</span><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: You may have another wpa_supplicant process already running or the file was
+</span><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: left by an unclean termination of wpa_supplicant in which case you will need
+</span><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: to manually remove this file before starting wpa_supplicant again.
+</span><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: wlp4s0: CTRL-EVENT-DSCP-POLICY clear_all
+</span><span>Aug 09 17:23:30 localhost wpa_supplicant[2510]: wlp4s0: CTRL-EVENT-DSCP-POLICY clear_all
+</span><span>Aug 09 17:23:30 localhost systemd[1]: wpa_supplicant.service: Main process exited, code=exited, status=255/EXCEPTION
+</span></code></pre><pre style=background:#0f1419;color:#bfbab0><code><span> 4198  sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
+</span><span> 4199  psg wpa
+</span><span> 4200  sudo killall wpa_supplicant
+</span><span> 4218  sudo killall wpa_supplicant
+</span><span> 4246  sudo wpa_cli status
+</span><span> 4247  sudo wpa_cli scan
+</span><span> 4248  sudo wpa_cli scan_result
+</span><span> 4257  sudo killall wpa_supplicant
+</span><span> 4258  hig wpa
+</span><span> 4311  sudo wpa_cli Add\ Search\ To\ A\ Hugo\ Site\ ·\ Make\ with\ Hugo_files/
+</span><span> 4314  sudo wpa_cli status
+</span><span> 4316  man wpa_supplicant
+</span><span> 4317  sudo vi /lib/systemd/system/wpa_supplicant* -p
+</span><span> 4318  cd /etc/wpa_supplicant/
+</span><span> 4319  more wpa_supplicant.conf
+</span><span> 4321  sudo wpa_supplicant -i wlp4s0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B -D wext
+</span><span> 4322  sudo more  /lib/systemd/system/wpa_supplicant*
+</span><span> 4323  psg wpa
+</span><span> 4324  sudo wpa_cli add_network
+</span><span> 4325  sudo wpa_cli select_network
+</span><span> 4326  sudo wpa_cli select_network 1
+</span><span> 4327  sudo wpa_cli enable_network 1
+</span><span> 4329  sudo wpa_cli scan
+</span><span> 4330  sudo wpa_cli scan_result
+</span><span> 4333  sudo vi /lib/systemd/system/wpa_supplicant.service
+</span><span> 4335  cp wpa_supplicant.conf ~
+</span><span> 4769  sudo systemctl restart wpa_supplicant.service
+</span><span> 4770  sudo wpa_supplicant -i wlp4s0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B -D wext
+</span><span> 4771  psg wpa
+</span><span> 5680  psg wpa
+</span><span> 5681  sudo wpa_supplicant -i wlp4s0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B -D wext
+</span><span> 5778  psg wpa
+</span><span> 5779  sudo killall wpa_supplicant
+</span><span> 5780  sudo wpa_supplicant -i wlp4s0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B -D wext
+</span><span>
+</span></code></pre><pre style=background:#0f1419;color:#bfbab0><code><span>$ ip a
+</span><span>1: lo: &LTLOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span>    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span>    inet 127.0.0.1/8 scope host lo
+</span><span>       valid_lft forever preferred_lft forever
+</span><span>    inet6 ::1/128 scope host
+</span><span>       valid_lft forever preferred_lft forever
+</span><span>2: enp0s31f6: &LTNO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN group default qlen 1000
+</span><span>    link/ether 54:bf:64:65:b2:60 brd ff:ff:ff:ff:ff:ff
+</span><span>3: wlp1s0: &LTNO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
+</span><span>    link/ether fc:b3:bc:36:fe:d4 brd ff:ff:ff:ff:ff:ff
+</span><span>
+</span><span>$ ip a
+</span><span>1: lo: &LTLOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span>    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span>    inet 127.0.0.1/8 scope host lo
+</span><span>       valid_lft forever preferred_lft forever
+</span><span>    inet6 ::1/128 scope host
+</span><span>       valid_lft forever preferred_lft forever
+</span><span>2: enp0s31f6: &LTNO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN group default qlen 1000
+</span><span>    link/ether 54:bf:64:65:b2:60 brd ff:ff:ff:ff:ff:ff
+</span><span>3: wlp1s0: &LTBROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+</span><span>    link/ether fc:b3:bc:36:fe:d4 brd ff:ff:ff:ff:ff:ff
+</span><span>    inet6 fe80::4e69:8cf1:16b5:a234/64 scope link tentative
+</span><span>       valid_lft forever preferred_lft forever
+</span><span>
+</span><span>$ ip a
+</span><span>1: lo: &LTLOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span>    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span>    inet 127.0.0.1/8 scope host lo
+</span><span>       valid_lft forever preferred_lft forever
+</span><span>    inet6 ::1/128 scope host
+</span><span>       valid_lft forever preferred_lft forever
+</span><span>2: enp0s31f6: &LTNO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN group default qlen 1000
+</span><span>    link/ether 54:bf:64:65:b2:60 brd ff:ff:ff:ff:ff:ff
+</span><span>3: wlp1s0: &LTBROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+</span><span>    link/ether fc:b3:bc:36:fe:d4 brd ff:ff:ff:ff:ff:ff
+</span><span>    inet 10.10.50.12/24 brd 10.10.50.255 scope global noprefixroute wlp1s0
+</span><span>       valid_lft forever preferred_lft forever
+</span><span>    inet6 fe80::4e69:8cf1:16b5:a234/64 scope link
+</span><span>       valid_lft forever preferred_lft forever
+</span></code></pre><p>隐藏SSID可以阻止一般的WiFi搜索工具找到网络，但专业的WiFi工具或黑客仍然可以通过嗅探技术或其他手段发现隐藏的SSID。因此，它不能提供真正的安全性。<p>连接到隐藏SSID的网络可能需要更多的时间，因为设备需要主动寻找并连接到网络。这可能导致一些性能问题，尤其是在移动设备上。<p>网络管理员需要更多的工作来管理隐藏的SSID，因为连接新设备可能需要手动配置SSID信息。<p>强大的加密和身份验证机制（如WPA3），而不是隐藏SSID，是更好的WiFi网络安全实践。隐藏SSID并不是一个真正有效的安全措施，而且可能对网络的易用性和性能产生负面影响。<p>隐藏SSID提供的安全性主要是依赖于“安全通过混淆”的思想，即隐藏网络名称能够防止一般用户发现网络。然而，安全性不应该仅仅依赖于隐藏信息，因为这是一种“安全通过隐匿”的方法，而不是通过强大的加密和身份验证。</section></article></main></div>

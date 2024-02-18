@@ -1,0 +1,131 @@
+<!doctype html><html class="dark light"><head><meta charset=UTF-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1.0" name=viewport><title>
+         Provisioning and deploying this blog with Ansible
+        
+    </title><meta content="Provisioning and deploying this blog with Ansible" property=og:title><meta content="Showing off Ansible by example" property=og:description><meta content="Showing off Ansible by example" name=description><link href=/icon/favicon.png rel=icon type=image/png><link href=https://ashang.github.io/zz/fonts.css rel=stylesheet><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script><script async id=MathJax-script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><link href=https://ashang.github.io/zz/atom.xml rel=alternate title=atbb type=application/atom+xml><link href=https://ashang.github.io/zz/theme/light.css rel=stylesheet><link href=https://ashang.github.io/zz/theme/dark.css id=darkModeStyle rel=stylesheet><link href=https://ashang.github.io/zz/main.css media=screen rel=stylesheet><body><div class=content><header><div class=main><a href=https://ashang.github.io/zz/>atbb</a><div class=socials><a class=social href=https://github.com/ashang/ rel=me> <img alt=github src=/social_icons/github.svg> </a></div></div><nav><a href=$BASE_URL/search/ style=margin-left:.7em>Search</a><a href=/notes style=margin-left:.7em>/notes</a><a href=/posts style=margin-left:.7em>/posts</a><a href=/gallery style=margin-left:.7em>/gallery</a><a href=/tags style=margin-left:.7em>/tags</a><a href=/projects style=margin-left:.7em>/projects</a> | <a href=javascript:void(0) id=dark-mode-toggle onclick=toggleTheme()> <img id=sun-icon src=/feather/sun.svg style=filter:invert(1)> <img id=moon-icon src=/feather/moon.svg> </a><script src=https://ashang.github.io/zz/js/themetoggle.js></script></nav></header><main><article><div class=title><div class=page-header>Provisioning and deploying this blog with Ansible<span class=primary-color style=font-size:1.6em>.</span></div><div class=meta>Posted on <time>2013-08-17</time></div></div><h1>Table of Contents</h1><ul><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#introduction>Introduction</a><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#ansible-i-choose-you>Ansible, I choose you!</a><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#installation-and-structure>Installation and structure</a><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#inventories-development-production>Inventories (development, production)</a><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#playbooks-site-yml>Playbooks (site.yml)</a><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#roles-everything-in-roles-directory>Roles (everything in roles/directory)</a><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#tasks-roles-tasks-yml>Tasks (roles/*/tasks/*.yml)</a><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#variables-roles-vars-yml>Variables (roles/*/vars/*.yml)</a><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#handlers-roles-handlers-yml>Handlers (roles/*/handlers/*yml)</a><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#running-it>Running it</a> <ul><li><a href=https://ashang.github.io/zz/posts/deploying-this-blog-using-ansible/#conclusion>Conclusion</a></ul></ul><section class=body><h2 id=introduction>Introduction</h2><p>Making changes by hand on a server is bad practice. If you have several servers you might forget to modify all of them, will be time consuming and deploying will be tedious. Or you get a new server and need to make it up and running quickly, are you going to remember everything you did on the current servers ?<p>Fortunately, lots of tools exist to automate the process : Chef, Puppet, Salt, Ansible and several others. Because I don't want to configure my server everytime and would like to automate the whole deploy thing, I chose to use Ansible for it. We're also using Ansible for Hizard as well so there's that.<h2 id=ansible-i-choose-you>Ansible, I choose you!</h2><p>I use <a href=https://www.ansible.com/ title=Ansible>Ansible</a> because it's the simplest solution I found. Playbooks (Ansible terms for the file that contains the actions to do on a server) are in YAML and configuration files in Jinja2 templates. You can't get easier than that, no weird custom ruby stuff. Also, it works by just SSHing to the servers, unlike the others that require to have a daemons on every servers. Lastly, it's written in Python, easy to write modules for and the community is very active.<h2 id=installation-and-structure>Installation and structure</h2><p>As Ansible is Python, let's just use a virtual env !<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> mkvirtualenv ansible
+</span><span style=color:#ffb454>$</span><span> pip install ansible
+</span></code></pre><p>And that's it really.<p>This is the structure I'm using :<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>├──</span><span> development
+</span><span style=color:#ffb454>├──</span><span> production
+</span><span style=color:#ffb454>├──</span><span> roles
+</span><span style=color:#ffb454>│</span><span>   ├── common
+</span><span style=color:#ffb454>│</span><span>   │   └── tasks
+</span><span style=color:#ffb454>│</span><span>   │       └── main.yml
+</span><span style=color:#ffb454>│</span><span>   └── pelican
+</span><span style=color:#ffb454>│</span><span>       ├── files
+</span><span style=color:#ffb454>│</span><span>       │   ├── key
+</span><span style=color:#ffb454>│</span><span>       │   ├── key.pub
+</span><span style=color:#ffb454>│</span><span>       │   └── known_hosts
+</span><span style=color:#ffb454>│</span><span>       ├── handlers
+</span><span style=color:#ffb454>│</span><span>       │   └── main.yml
+</span><span style=color:#ffb454>│</span><span>       ├── tasks
+</span><span style=color:#ffb454>│</span><span>       │   ├── deploy.yml
+</span><span style=color:#ffb454>│</span><span>       │   └── main.yml
+</span><span style=color:#ffb454>│</span><span>       ├── templates
+</span><span style=color:#ffb454>│</span><span>       │   └── nginx.conf.j2
+</span><span style=color:#ffb454>│</span><span>       └── vars
+</span><span style=color:#ffb454>│</span><span>           └── main.yml
+</span><span style=color:#ffb454>└──</span><span> site.yml
+</span><span>
+</span></code></pre><p>I'll go over these files one by one.<h2 id=inventories-development-production>Inventories (development, production)</h2><p>This is where you define the hosts against which you are going to run your playbooks. The development file contain only the VM I use to test the playbook and the production one includes the live server. Inventory file are simple ini files (there are some specific features you can look at in Ansible doc) :<pre class=language-ini data-lang=ini style=background:#0f1419;color:#bfbab0><code class=language-ini data-lang=ini><span style=color:#ff7733>[blog]
+</span><span style=color:#f29718>192.168.43.157
+</span></code></pre><p>(I'm using ip here but you can use domain name too of course). In this file I listed the 192.168.43.157 ip as being part of the blog group.<h2 id=playbooks-site-yml>Playbooks (site.yml)</h2><p>This is the main compononent of Ansible. site.yml is the master playbook which does both the provisioning and the deploy, you can of course have a playbook specific to provision and one specific to deploy if you prefer.<pre class=language-yaml data-lang=yaml style=background:#0f1419;color:#bfbab0><code class=language-yaml data-lang=yaml><span>---
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Update Ubuntu, install Pelican, grab the repo, generate the blog
+</span><span>  </span><span style=color:#59c2ff>hosts</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>blog
+</span><span>  </span><span style=color:#59c2ff>user</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>root
+</span><span>
+</span><span>  </span><span style=color:#59c2ff>roles</span><span style=color:#bfbab0cc>:
+</span><span>    - </span><span style=color:#c2d94c>common
+</span><span>    - </span><span style=color:#c2d94c>pelican
+</span></code></pre><p>All these lines are worth explaining :<ul><li>name: describe what the playbook or task (details on tasks below) does<li>hosts: which group the playbook should be run against<li>user: which user you want to connect and run the playbook with (Ansible defaults to the user running the playbook, which is rarely what you want)<li>roles: this is new in Ansible 1.2. Roles are basically meant to divide a playbook in small subsets to make it more reusable and clear</ul><h2 id=roles-everything-in-roles-directory>Roles (everything in roles/directory)</h2><p>Roles are basically directories containing known directories: tasks, files, templates, handlers and vars. All the main.yml in these folders will automatically be added to the play and you won't need to specify path for files in files and templates.<h2 id=tasks-roles-tasks-yml>Tasks (roles/*/tasks/*.yml)</h2><p>These are the actions the play will execute Here's the roles/pelican/tasks/main.yml :<pre class=language-yaml data-lang=yaml style=background:#0f1419;color:#bfbab0><code class=language-yaml data-lang=yaml><span>---
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Install required system packages.
+</span><span>  </span><span style=color:#59c2ff>apt</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>pkg={{ item }} state=installed
+</span><span>  </span><span style=color:#59c2ff>with_items</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>'{{ packages }}'
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Create user
+</span><span>  </span><span style=color:#59c2ff>user</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>home={{ user_home }} name={{ user }} shell=/bin/bash state=present
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Add user to sudo group
+</span><span>  </span><span style=color:#59c2ff>user</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>name={{ user }} groups=sudo append=true
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Create the SSH directory.
+</span><span>  </span><span style=color:#59c2ff>file</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>state=directory path={{ user_ssh_directory }}
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Upload SSH known hosts.
+</span><span>  </span><span style=color:#59c2ff>copy</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>src=known_hosts dest={{ user_ssh_directory }}known_hosts mode=0600
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Upload SSH private key.
+</span><span>  </span><span style=color:#59c2ff>copy</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>src=key dest={{ user_ssh_directory }}id_rsa mode=0600
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Add authorized key for the user
+</span><span>  </span><span style=color:#59c2ff>authorized_key</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>user={{ user }} key='{{ item }}'
+</span><span>  </span><span style=color:#59c2ff>with_file</span><span style=color:#bfbab0cc>:
+</span><span>    - </span><span style=color:#c2d94c>key.pub
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Change permissions
+</span><span>  </span><span style=color:#59c2ff>shell</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>chown -R {{ user }}:{{ user }} {{ user_home }}
+</span><span>
+</span><span style=font-style:italic;color:#5c6773># Deploy is in a different file because it might get long
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>include</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>deploy.yml
+</span></code></pre><p>This uses several <a title="Ansible modules" href=https://docs.ansible.com/ansible/latest/modules/modules_by_category.html>modules</a> but this is really how Ansible works : give a name to a task and the command to execute, using a module or a raw command. I include the deploy.yml instead of listing the tasks in main.yml because I might want to create another playbook only for deploy and it's clearer that way anyway. All the {{ }} elements are variables explained in the next part. Since you probably don't want to run the whole play everytime you're deploying something, you can tag some tasks and run tasks by tags later. Here is the deploy.yml :<pre class=language-yaml data-lang=yaml style=background:#0f1419;color:#bfbab0><code class=language-yaml data-lang=yaml><span>---
+</span><span>
+</span><span style=font-style:italic;color:#5c6773># Deploy part of the playbook
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Pull source from bitbucket
+</span><span>  </span><span style=color:#59c2ff>git</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>repo={{ repo }} dest={{ blog_directory }}
+</span><span>  </span><span style=color:#59c2ff>sudo</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>yes
+</span><span>  </span><span style=color:#59c2ff>sudo_user</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>'{{ user }}'
+</span><span>  </span><span style=color:#59c2ff>tags</span><span style=color:#bfbab0cc>:
+</span><span>    - </span><span style=color:#c2d94c>deploy
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Init submodules
+</span><span>  </span><span style=color:#59c2ff>command</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>git submodule update --init --recursive chdir={{ blog_directory }}
+</span><span>  </span><span style=color:#59c2ff>sudo</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>yes
+</span><span>  </span><span style=color:#59c2ff>sudo_user</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>'{{ user }}'
+</span><span>  </span><span style=color:#59c2ff>tags</span><span style=color:#bfbab0cc>:
+</span><span>    - </span><span style=color:#c2d94c>deploy
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Install requirements
+</span><span>  </span><span style=color:#59c2ff>pip</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>requirements={{ blog_directory }}requirements.txt virtualenv={{ user_home }}env
+</span><span>  </span><span style=color:#59c2ff>sudo</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>yes
+</span><span>  </span><span style=color:#59c2ff>sudo_user</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>'{{ user }}'
+</span><span>  </span><span style=color:#59c2ff>tags</span><span style=color:#bfbab0cc>:
+</span><span>    - </span><span style=color:#c2d94c>deploy
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Generate blog
+</span><span>  </span><span style=color:#59c2ff>shell</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>. {{ user_home }}env/bin/activate && make publish chdir={{ blog_directory }}site
+</span><span>  </span><span style=color:#59c2ff>sudo</span><span style=color:#bfbab0cc>: </span><span style=color:#f29718>yes
+</span><span>  </span><span style=color:#59c2ff>sudo_user</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>'{{ user }}'
+</span><span>  </span><span style=color:#59c2ff>tags</span><span style=color:#bfbab0cc>:
+</span><span>    - </span><span style=color:#c2d94c>deploy
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>Copy nginx config (as I might add some custom stuff for some urls)
+</span><span>  </span><span style=color:#59c2ff>template</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>src=nginx.conf.j2 dest=/etc/nginx/sites-enabled/{{ user }}
+</span><span>  </span><span style=color:#59c2ff>notify</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>reload nginx
+</span><span>  </span><span style=color:#59c2ff>tags</span><span style=color:#bfbab0cc>:
+</span><span>    - </span><span style=color:#c2d94c>deploy
+</span></code></pre><p>Several things going on there. First you can notice that we're using sudo and sudo_user because we want to run these steps as the pelican user and not root (not very satistied of that solution, would probably make more sense to have a deploy role using the pelican user directly). All the tasks are using the deploy tag, meaning that I will be able to run only those tasks later if I choose to.<h2 id=variables-roles-vars-yml>Variables (roles/*/vars/*.yml)</h2><p>These values will be added into the play and usable throughout the play. In this case, I'm using the variables in tasks and templates (the nginx config). You can also define variable specific to a group by putting them in a group_vars folder in a top directory and naming the yml file the name of the group (or use all.yml if you want the variables to be available for every groupe). You can use interpolation from within the file itself, but you need to use the ${} syntax of the {{ }} (if anyone knows how to make it work using {{ }} ).<pre class=language-yaml data-lang=yaml style=background:#0f1419;color:#bfbab0><code class=language-yaml data-lang=yaml><span>---
+</span><span>
+</span><span style=color:#59c2ff>user</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>pelican
+</span><span style=color:#59c2ff>user_home</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>/home/${user}/
+</span><span style=color:#59c2ff>user_ssh_directory</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>${user_home}.ssh/
+</span><span style=color:#59c2ff>blog_directory</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>${user_home}blog/
+</span><span style=color:#59c2ff>serve_directory</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>${blog_directory}site/output/
+</span><span>
+</span><span style=color:#59c2ff>repo</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>git@bitbucket.org:Keats/perso.git
+</span><span>
+</span><span style=color:#59c2ff>packages</span><span style=color:#bfbab0cc>:
+</span><span>  - </span><span style=color:#c2d94c>build-essential
+</span><span>  - </span><span style=color:#c2d94c>python2.7-dev
+</span><span>  - </span><span style=color:#c2d94c>git
+</span><span>  - </span><span style=color:#c2d94c>fail2ban
+</span><span>  - </span><span style=color:#c2d94c>python-virtualenv
+</span><span>  - </span><span style=color:#c2d94c>nginx
+</span></code></pre><h2 id=handlers-roles-handlers-yml>Handlers (roles/*/handlers/*yml)</h2><p>Handlers are tasks that you reference by name (you can see the notify: reload nginx in the deploy.yml). They are basically used to restart/reload services.<pre class=language-yaml data-lang=yaml style=background:#0f1419;color:#bfbab0><code class=language-yaml data-lang=yaml><span>---
+</span><span>
+</span><span>- </span><span style=color:#59c2ff>name</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>reload nginx
+</span><span>  </span><span style=color:#59c2ff>service</span><span style=color:#bfbab0cc>: </span><span style=color:#c2d94c>name=nginx state=reloaded
+</span></code></pre><h2 id=running-it>Running it</h2><p>To run a playbook, just specify which inventory file you want to use with -i flag and the name of the playbook file. If you're logging in with a password, you will need the --ask-pass option. You can also limit which tasks should be run using the tags parameter.<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#ffb454>$</span><span> ansible-playbook</span><span style=color:#f29718> --ask-pass -i</span><span> development site.yml
+</span><span style=color:#ffb454>$</span><span> ansible-playbook</span><span style=color:#f29718> --ask-pass -i</span><span> development site.yml</span><span style=color:#f29718> --tags </span><span style=color:#c2d94c>"deploy"
+</span></code></pre><h3 id=conclusion>Conclusion</h3><p>Having the whole process automated means I can get a new server and have it up and running in less than 5 minutes and that's pretty cool. I'm also going to put the deploy in the post-commit hook so I won't even have to run the playbook manually.</section></article></main></div>

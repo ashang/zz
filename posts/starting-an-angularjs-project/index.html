@@ -1,0 +1,77 @@
+<!doctype html><html class="dark light"><head><meta charset=UTF-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1.0" name=viewport><title>
+         Starting an AngularJS project
+        
+    </title><meta content="Starting an AngularJS project" property=og:title><meta content="A Boilerplate for a complete dev environment using AngularJS" property=og:description><meta content="A Boilerplate for a complete dev environment using AngularJS" name=description><link href=/icon/favicon.png rel=icon type=image/png><link href=https://ashang.github.io/zz/fonts.css rel=stylesheet><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script><script async id=MathJax-script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><link href=https://ashang.github.io/zz/atom.xml rel=alternate title=atbb type=application/atom+xml><link href=https://ashang.github.io/zz/theme/light.css rel=stylesheet><link href=https://ashang.github.io/zz/theme/dark.css id=darkModeStyle rel=stylesheet><link href=https://ashang.github.io/zz/main.css media=screen rel=stylesheet><body><div class=content><header><div class=main><a href=https://ashang.github.io/zz/>atbb</a><div class=socials><a class=social href=https://github.com/ashang/ rel=me> <img alt=github src=/social_icons/github.svg> </a></div></div><nav><a href=$BASE_URL/search/ style=margin-left:.7em>Search</a><a href=/notes style=margin-left:.7em>/notes</a><a href=/posts style=margin-left:.7em>/posts</a><a href=/gallery style=margin-left:.7em>/gallery</a><a href=/tags style=margin-left:.7em>/tags</a><a href=/projects style=margin-left:.7em>/projects</a> | <a href=javascript:void(0) id=dark-mode-toggle onclick=toggleTheme()> <img id=sun-icon src=/feather/sun.svg style=filter:invert(1)> <img id=moon-icon src=/feather/moon.svg> </a><script src=https://ashang.github.io/zz/js/themetoggle.js></script></nav></header><main><article><div class=title><div class=page-header>Starting an AngularJS project<span class=primary-color style=font-size:1.6em>.</span></div><div class=meta>Posted on <time>2013-10-23</time></div></div><h1>Table of Contents</h1><ul><li><a href=https://ashang.github.io/zz/posts/starting-an-angularjs-project/#starting-a-new-project>Starting a new project</a> <ul><li><a href=https://ashang.github.io/zz/posts/starting-an-angularjs-project/#ng-boilerplate-by-josh-david-miller>ng-boilerplate by Josh David Miller</a><li><a href=https://ashang.github.io/zz/posts/starting-an-angularjs-project/#my-own-ng-boilerplate>My own ng-boilerplate</a></ul><li><a href=https://ashang.github.io/zz/posts/starting-an-angularjs-project/#architecture-example>Architecture example</a><li><a href=https://ashang.github.io/zz/posts/starting-an-angularjs-project/#conclusion>Conclusion</a><li><a href=https://ashang.github.io/zz/posts/starting-an-angularjs-project/#how-to-learn-angularjs>How to learn AngularJS</a></ul><section class=body><p>I don't think there is any need to introduce <a href=http://angularjs.org/ title=AngularJS>AngularJS</a> anymore, but here's a (very) small introduction of it to make sure everyone knows the basics.<p>AngularJS is a client-side framework, replacing the jquery code usually present on most sites. Instead of modifying the DOM on events manually (like displaying a div on a click event), AngularJS takes a declarative approach.<p>The following examples show the difference in paradigm between these two.<pre class=language-javascript data-lang=javascript style=background:#0f1419;color:#bfbab0><code class=language-javascript data-lang=javascript><span style=font-style:italic;color:#5c6773>// jQuery version
+</span><span style=color:#ffb454>$</span><span>(</span><span style=color:#c2d94c>'my-button'</span><span>)</span><span style=color:#f29668>.</span><span style=color:#f07178>click</span><span>(</span><span style=color:#ff7733>function</span><span>() {
+</span><span>  </span><span style=color:#ffb454>$</span><span>(</span><span style=color:#c2d94c>'my-div'</span><span>)</span><span style=color:#f29668>.</span><span style=color:#ffb454>show</span><span>()</span><span style=color:#bfbab0cc>;
+</span><span>})</span><span style=color:#bfbab0cc>;
+</span></code></pre><pre class=language-html data-lang=html style=background:#0f1419;color:#bfbab0><code class=language-html data-lang=html><span style=font-style:italic;color:#5c6773>&LT!-- AngularJS version -->
+</span><span style=color:#39bae690><</span><span style=color:#59c2ff>button </span><span style=color:#ffb454>ng-click</span><span style=color:#bfbab0cc>=</span><span style=color:#c2d94c>"showDiv = !showDiv"</span><span style=color:#39bae690>></span><span>Click me</span><span style=color:#39bae690>&LT/</span><span style=color:#59c2ff>button</span><span style=color:#39bae690>>
+</span><span style=color:#39bae690><</span><span style=color:#59c2ff>div </span><span style=color:#ffb454>ng-show</span><span style=color:#bfbab0cc>=</span><span style=color:#c2d94c>"showDiv"</span><span style=color:#39bae690>></span><span>Hidden by default</span><span style=color:#39bae690>&LT/</span><span style=color:#59c2ff>div</span><span style=color:#39bae690>>
+</span></code></pre><p>Some people will not like the fact that you're putting logic in the HTML, I personally much prefer this kind of approach to a jquery based one, and I find it much easier to organise your code using directives, controllers, services than the usual jquery spaghetti.<p>For a real overview, please check the official website.<h2 id=starting-a-new-project>Starting a new project</h2><p>A problem new developers encounter is how to organise their code. For simple (and I mean -learning how it works- kind of simple only), putting everything in one file is file but obviously does not work once you start working on bigger projects. Since I like organising code properly, I looked around to see what was the recommended way for that in AngularJS project.<h3 id=ng-boilerplate-by-josh-david-miller>ng-boilerplate by Josh David Miller</h3><p>While I didn't find THE answer (there's no imposed structure like in many server-side frameworks so everyone do their own thing, which can be great), I found ng-boilerplate by joshdmiller (link now dead). This boilerplate separates code by feature, containing all the code (including css/html) for that particular feature. It also uses <a href=https://github.com/angular-ui/ui-router title=ui-router>ui-router</a> which is quite awesome. It also comes with a whole lot of grunt tasks to automate dev/test/release cycle: everytime you save a file, it runs the associated task with this type of file and reloads your page. I used this boilerplate for a learning project, <a href=https://github.com/Keats/kCalculator title=kCalculator>kCalculator</a> and while it is a very good start, I found it not that practical for my own use (I use Sass, it uses LESS for example) and it had lots of things that I didn't really want.<h3 id=my-own-ng-boilerplate>My own ng-boilerplate</h3><p>Since I wanted to start a new project (which will be much more complex than kCalculator), I decided that this time I would use something tailored for me. Rather than forking and changing most of the code of the original, I started from scratch and added feature by feature what I needed. Result is <a href=https://github.com/Keats/ng-boilerplate title=ng-boilerplate>ng-boilerplate</a> (yes the name is lazy). The end results differs quite a bit from the original :<ul><li>no ng-min in the build (since you can do it by hand in your code)<li>coffeescript only<li>Sass with Foundation<li>templates and css in their own directory instead of inside their small 'feature app'<li>reorganised grunt tasks<li>not concatenating dist libs with app libs (need to implement using CDN for dist libs on release task)</ul><h2 id=architecture-example>Architecture example</h2><p>Here is the layout of the project I'm working on (this is still very early, probably going to change some things later on) :<pre class=language-bash data-lang=bash style=background:#0f1419;color:#bfbab0><code class=language-bash data-lang=bash><span style=color:#f07178>.
+</span><span style=color:#ffb454>├──</span><span> app
+</span><span style=color:#ffb454>│</span><span>   ├── app.coffee
+</span><span style=color:#ffb454>│</span><span>   ├── app.tests.coffee
+</span><span style=color:#ffb454>│</span><span>   ├── home
+</span><span style=color:#ffb454>│</span><span>   │   └── home.coffee
+</span><span style=color:#ffb454>│</span><span>   ├── teams
+</span><span style=color:#ffb454>│</span><span>   │   ├── list.coffee
+</span><span style=color:#ffb454>│</span><span>   │   ├── module.coffee
+</span><span style=color:#ffb454>│</span><span>   │   ├── service.coffee
+</span><span style=color:#ffb454>│</span><span>   │   └── tests
+</span><span style=color:#ffb454>│</span><span>   │       └── list.tests.coffee
+</span><span style=color:#ffb454>│</span><span>   └── users
+</span><span style=color:#ffb454>│</span><span>       ├── module.coffee
+</span><span style=color:#ffb454>│</span><span>       ├── new.coffee
+</span><span style=color:#ffb454>│</span><span>       └── service.coffee
+</span><span style=color:#ffb454>├──</span><span> assets
+</span><span style=color:#ffb454>│</span><span>   └── img
+</span><span style=color:#ffb454>│</span><span>   └── fonts
+</span><span style=color:#ffb454>├──</span><span> common
+</span><span style=color:#ffb454>│</span><span>   └── form
+</span><span style=color:#ffb454>│</span><span>       └── directives.coffee
+</span><span style=color:#ffb454>├──</span><span> index.html
+</span><span style=color:#ffb454>├──</span><span> style
+</span><span style=color:#ffb454>│</span><span>   ├── app.scss
+</span><span style=color:#ffb454>│</span><span>   ├── _forms.scss
+</span><span style=color:#ffb454>│</span><span>   ├── _normalize.scss
+</span><span style=color:#ffb454>│</span><span>   └── _settings.scss
+</span><span style=color:#ffb454>└──</span><span> templates
+</span><span>    </span><span style=color:#ffb454>├──</span><span> home
+</span><span>    </span><span style=color:#ffb454>│</span><span>   └── index.html
+</span><span>    </span><span style=color:#ffb454>├──</span><span> teams
+</span><span>    </span><span style=color:#ffb454>│</span><span>   └── list.html
+</span><span>    </span><span style=color:#ffb454>└──</span><span> users
+</span><span>        </span><span style=color:#ffb454>├──</span><span> main.html
+</span><span>        </span><span style=color:#ffb454>├──</span><span> new.html
+</span><span>        </span><span style=color:#ffb454>└──</span><span> verification.html
+</span><span>
+</span></code></pre><p>All of the different 'features' are nicely placed under the app folder and each file in it has a unique function. The module.coffee under each looks something like the following:<pre style=background:#0f1419;color:#bfbab0><code><span>modules = [
+</span><span>  'ui.router.state',
+</span><span>
+</span><span>  'users.new'
+</span><span>]
+</span><span>
+</span><span>users = angular.module 'arena.users', modules
+</span><span>
+</span><span>users.config ['$stateProvider', ($stateProvider) ->
+</span><span>  $stateProvider.state 'users',
+</span><span>    abstract: true
+</span><span>    url: '/users'
+</span><span>    views:
+</span><span>      main:
+</span><span>        template: '&LTui-view/>'
+</span><span>
+</span><span>  $stateProvider.state 'users.new',
+</span><span>    url: '/new'
+</span><span>    templateUrl: 'users/new.html'
+</span><span>    controller: 'NewUserCtrl'
+</span><span>    data:
+</span><span>      pageTitle: 'Register'
+</span><span>
+</span><span>    $stateProvider.state 'users.verification',
+</span><span>      url: '/verification'
+</span><span>      templateUrl: 'users/verification.html'
+</span><span>      data:
+</span><span>        pageTitle: 'Check your emails'
+</span></code></pre><p>This file is the entry point of the feature, injecting all the different modules (list, create, etc) and defining the views (using ui-router). All of the other files are standard AngularJS controllers, services, directives. If I think something can be reused in another feature/project, it goes in the common directory.<h2 id=conclusion>Conclusion</h2><p>So far I really like this organisation, and this is working well for now. I will update it as the project grows bigger since I will probably find flaws by then.<h2 id=how-to-learn-angularjs>How to learn AngularJS</h2><ul><li><a href=http://egghead.io/ title=egghead.io>egghead.io</a>: short videos explaining very well everything<li><a href=http://www.thinkster.io/ title=thinkster.io>thinkster.io</a>: explains lots of concept using egghead videos as a base and expand on them</ul></section></article></main></div>

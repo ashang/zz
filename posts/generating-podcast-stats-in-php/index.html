@@ -1,0 +1,80 @@
+<!doctype html><html class="dark light"><head><meta charset=UTF-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1.0" name=viewport><title>
+         Generating Podcast Stats in PHP
+        
+    </title><meta content="Generating Podcast Stats in PHP" property=og:title><meta content="An elegant and understated" property=og:description><meta content="An elegant and understated" name=description><link href=/icon/favicon.png rel=icon type=image/png><link href=https://ashang.github.io/zz/fonts.css rel=stylesheet><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script><script async id=MathJax-script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><link href=https://ashang.github.io/zz/atom.xml rel=alternate title=atbb type=application/atom+xml><link href=https://ashang.github.io/zz/theme/light.css rel=stylesheet><link href=https://ashang.github.io/zz/theme/dark.css id=darkModeStyle rel=stylesheet><link href=https://ashang.github.io/zz/main.css media=screen rel=stylesheet><body><div class=content><header><div class=main><a href=https://ashang.github.io/zz/>atbb</a><div class=socials><a class=social href=https://github.com/ashang/ rel=me> <img alt=github src=/social_icons/github.svg> </a></div></div><nav><a href=$BASE_URL/search/ style=margin-left:.7em>Search</a><a href=/notes style=margin-left:.7em>/notes</a><a href=/posts style=margin-left:.7em>/posts</a><a href=/gallery style=margin-left:.7em>/gallery</a><a href=/tags style=margin-left:.7em>/tags</a><a href=/projects style=margin-left:.7em>/projects</a> | <a href=javascript:void(0) id=dark-mode-toggle onclick=toggleTheme()> <img id=sun-icon src=/feather/sun.svg style=filter:invert(1)> <img id=moon-icon src=/feather/moon.svg> </a><script src=https://ashang.github.io/zz/js/themetoggle.js></script></nav></header><main><article><div class=title><div class=page-header>Generating Podcast Stats in PHP<span class=primary-color style=font-size:1.6em>.</span></div><div class=meta>Posted on <time>2016-06-07</time></div></div><h1>Table of Contents</h1><ul><li><a href=https://ashang.github.io/zz/posts/generating-podcast-stats-in-php/#parsing-the-yaml-front-matter>Parsing the YAML front-matter</a></ul><section class=body><p>In the <a href=http://threedevsandamaybe.com/the-one-hundredth-episode/>100th episode</a> of Three Devs and a Maybe I decided to generate some stats relating to the previous 99 episodes and formed a small quiz out of these findings. All information relating to each podcast is stored in separate Markdown files within YAML front-matter, which makes it easy to pull out and process. I thought it would be interesting to go over the code I used to achieve this.<h3 id=parsing-the-yaml-front-matter>Parsing the YAML front-matter</h3><p>The first job we need to do is to parse each of the podcasts front-matter into a format that we can processed in PHP.<p>{% highlight php %}<?php
+
+$podcasts = array_reduce(scandir(POSTS_DIR), function ($meta, $fileName) {
+    if (strpos($fileName, '.') === 0) {
+        return $meta;
+    }
+
+    if (!preg_match_all('/^([a-z]+):\s+([^\n]+)/m', file_get_contents(POSTS_DIR . '/' . $fileName), $match)) {
+        return $meta;
+    }
+
+    return array_merge($meta, [array_combine($match[1], $match[2])]);
+}, []);
+{% endhighlight %}
+
+### Stats, stats, stats
+
+With the podcast meta-data now in a format with can process, we can now go about generating some stats. 
+ 
+{% highlight php %}
+<?php
+
+// Total size
+array_sum(array_column($podcasts, 'size'));
+
+// Total duration
+array_sum(array_column($podcasts, 'duration'));
+
+// Average duration
+round(array_sum(array_column($podcasts, 'duration')) / count($podcasts));
+{% endhighlight %}
+
+{% highlight php %}
+<?php
+
+// Release day rankings
+$days = array_count_values(
+    array_map(
+        function ($meta) { return date_create($meta['date'])->format('D'); },
+        $podcasts));
+arsort($days);
+implode(', ', array_map(function ($day, $total) { return "$day ($total)"; }, array_keys($days), $days));
+
+// Release month rankings
+$months = array_count_values(
+    array_map(
+        function ($meta) { return date_create($meta['date'])->format('M'); },
+        $podcasts));
+arsort($months);
+implode(', ', array_map(function ($month, $total) { return "$month ($total)"; }, array_keys($months), $months));
+{% endhighlight %}
+
+{% highlight php %}
+<?php
+
+// Most frequent title words
+$words = array_count_values(
+    array_reduce($podcasts, function ($words, $m) {
+        $t = trim(preg_replace('/[^a-z\s]/i', '', strtolower($m['title'])));
+        return array_merge($words, explode(' ', $t));
+    }, []));
+arsort($words);
+implode(', ', array_keys(array_slice($words, 0, 10)));
+{% endhighlight %}
+
+        </section>
+
+        
+
+    </article>
+</main>
+
+
+    </div>
+</body>
+
+</html>
